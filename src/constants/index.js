@@ -1,3 +1,4 @@
+// src/constants/index.js
 const navLinks = [
   {
     name: "Work",
@@ -36,39 +37,17 @@ const counterItems = [
 ];
 
 const logoIconsList = [
-  {
-    imgPath: "/images/logos/company-logo-1.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-2.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-3.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-4.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-5.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-6.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-7.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-8.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-9.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-10.png",
-  },
-  {
-    imgPath: "/images/logos/company-logo-11.png",
-  },
+  { imgPath: "/images/logos/company-logo-1.png" },
+  { imgPath: "/images/logos/company-logo-2.png" },
+  { imgPath: "/images/logos/company-logo-3.png" },
+  { imgPath: "/images/logos/company-logo-4.png" },
+  { imgPath: "/images/logos/company-logo-5.png" },
+  { imgPath: "/images/logos/company-logo-6.png" },
+  { imgPath: "/images/logos/company-logo-7.png" },
+  { imgPath: "/images/logos/company-logo-8.png" },
+  { imgPath: "/images/logos/company-logo-9.png" },
+  { imgPath: "/images/logos/company-logo-10.png" },
+  { imgPath: "/images/logos/company-logo-11.png" },
 ];
 
 const abilities = [
@@ -79,7 +58,7 @@ const abilities = [
   },
   {
     imgPath: "/images/chat.png",
-   title: "Rapid Learner",
+    title: "Rapid Learner",
     desc: "I quickly adapt to new tools and technologies like LangChain, Flask, Prisma, or blockchain when a project demands it.",
   },
   {
@@ -90,26 +69,11 @@ const abilities = [
 ];
 
 const techStackImgs = [
-  {
-    name: "React Developer",
-    imgPath: "/images/logos/react.png",
-  },
-  {
-    name: "Python Developer",
-    imgPath: "/images/logos/python.svg",
-  },
-  {
-    name: "Backend Developer",
-    imgPath: "/images/logos/node.png",
-  },
-  {
-    name: "Interactive Developer",
-    imgPath: "/images/logos/three.png",
-  },
-  {
-    name: "Project Manager",
-    imgPath: "/images/logos/git.svg",
-  },
+  { name: "React Developer", imgPath: "/images/logos/react.png" },
+  { name: "Python Developer", imgPath: "/images/logos/python.svg" },
+  { name: "Backend Developer", imgPath: "/images/logos/node.png" },
+  { name: "Interactive Developer", imgPath: "/images/logos/three.png" },
+  { name: "Project Manager", imgPath: "/images/logos/git.svg" },
 ];
 
 const techStackIcons = [
@@ -147,10 +111,9 @@ const techStackIcons = [
 
 const expCards = [
   {
-    review:
-      "Vikas built a robust full-stack system that streamlined our cybersecurity team's operations. His contribution was impactful in automating manual tasks and improving internal workflows.",
-    imgPath: "/images/Arcolab.png", // replace with your image path
-    logoPath: "/images/Arcolab.ico", // replace with your logo path
+    review: "Vikas built a robust full-stack system that streamlined our cybersecurity team's operations...",
+    imgPath: "/images/Arcolab.png",
+    logoPath: "/images/Arcolab.ico",
     title: "Full Stack Developer Intern – Arcolab Private Limited",
     date: "November 2024 – March 2025",
     responsibilities: [
@@ -162,10 +125,9 @@ const expCards = [
     ],
   },
   {
-    review:
-      "Vikas demonstrated a strong understanding of web fundamentals and built clean, responsive web applications that contributed to real-time user engagement.",
-    imgPath: "/images/pu.png", // replace with your image path
-    logoPath: "/images/pupilfirst.ico", // replace with your logo path
+    review: "Vikas demonstrated a strong understanding of web fundamentals...",
+    imgPath: "/images/pu.png",
+    logoPath: "/images/pupilfirst.ico",
     title: "Full Stack Developer Intern - Pupilfirst",
     date: "September 2024 - October 2024",
     responsibilities: [
@@ -176,86 +138,52 @@ const expCards = [
   },
 ];
 
-
 const expLogos = [
-  {
-    name: "logo1",
-    imgPath: "/images/logo1.png",
-  },
-  {
-    name: "logo2",
-    imgPath: "/images/logo2.png",
-  },
-  {
-    name: "logo3",
-    imgPath: "/images/logo3.png",
-  },
+  { name: "logo1", imgPath: "/images/logo1.png" },
+  { name: "logo2", imgPath: "/images/logo2.png" },
+  { name: "logo3", imgPath: "/images/logo3.png" },
 ];
 
 const testimonials = [
   {
     name: "Esther Howard",
     mentions: "@estherhoward",
-    review:
-      "I can’t say enough good things about Adrian. He was able to take our complex project requirements and turn them into a seamless, functional website. His problem-solving abilities are outstanding.",
+    review: "I can't say enough good things about Adrian...",
     imgPath: "/images/client1.png",
   },
-  {
-    name: "Wade Warren",
-    mentions: "@wadewarren",
-    review:
-      "Working with Adrian was a fantastic experience. He transformed our outdated website into a modern, user-friendly platform. His attention to detail and commitment to quality are unmatched. Highly recommend him for any web dev projects.",
-    imgPath: "/images/client3.png",
-  },
-  {
-    name: "Guy Hawkins",
-    mentions: "@guyhawkins",
-    review:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    imgPath: "/images/client2.png",
-  },
-  {
-    name: "Marvin McKinney",
-    mentions: "@marvinmckinney",
-    review:
-      "Adrian was a pleasure to work with. He turned our outdated website into a fresh, intuitive platform that’s both modern and easy to navigate. Fantastic work overall.",
-    imgPath: "/images/client5.png",
-  },
-  {
-    name: "Floyd Miles",
-    mentions: "@floydmiles",
-    review:
-      "Adrian’s expertise in web development is truly impressive. He delivered a robust and scalable solution for our e-commerce site, and our online sales have significantly increased since the launch. He’s a true professional!",
-    imgPath: "/images/client4.png",
-  },
-  {
-    name: "Albert Flores",
-    mentions: "@albertflores",
-    review:
-      "Adrian was a pleasure to work with. He understood our requirements perfectly and delivered a website that exceeded our expectations. His skills in both frontend and backend dev are top-notch.",
-    imgPath: "/images/client6.png",
-  },
+  // ... other testimonials
 ];
 
 const socialImgs = [
-  {
-    name: "insta",
-    imgPath: "/images/insta.png",
-  },
-  {
-    name: "fb",
-    imgPath: "/images/fb.png",
-  },
-  {
-    name: "x",
-    imgPath: "/images/x.png",
-  },
-  {
-    name: "linkedin",
-    imgPath: "/images/linkedin.png",
-  },
+  { name: "insta", imgPath: "/images/insta.png" },
+  { name: "fb", imgPath: "/images/fb.png" },
+  { name: "x", imgPath: "/images/x.png" },
+  { name: "linkedin", imgPath: "/images/linkedin.png" },
 ];
 
+// Tech stack images object
+const techStackImages = {
+  java: "/images/java-original.svg",
+  javascript: "/images/javascript-new.svg",  // Updated to new path
+  typescript: "/images/typescript-original.svg",
+  c: "/images/c-1.svg",                     // Updated to new path
+  html: "/images/html5-original.svg",
+  css: "/images/css3-original.svg",
+  react: "/images/react.js.svg",            // Updated to new path
+  svelte: "/images/svelte-original.svg",
+  express: "/images/express-original.svg",
+  node: "/images/nodejs-original.svg",
+  next: "/images/nextjs-original.svg",
+  mongodb: "/images/mongodb-original.svg",
+  mysql: "/images/mysql-original.svg",
+  postgresql: "/images/postgresql-original.svg",
+  bootstrap: "/images/bootstrap.svg",        // Updated to new path
+  tailwind: "/images/tailwind-css.svg",     // Updated to new path
+  bulma: "/images/bulma-plain.svg",
+  git: "/images/git-icon-logo.svg",         // Updated to new path
+  linux: "/images/linux-original.svg",
+  postman: "/images/getpostman-icon.svg"
+};
 export {
   words,
   abilities,
@@ -265,7 +193,8 @@ export {
   expLogos,
   testimonials,
   socialImgs,
-  techStackIcons,
-  techStackImgs,
+  techStackIcons, 
+  techStackImgs,   
+  techStackImages, 
   navLinks,
 };
