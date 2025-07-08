@@ -29,9 +29,10 @@ const words = [
 ];
 
 const counterItems = [
-  { value: 1, suffix: "+", label: "Years of Experience" },
-  { value: 6, suffix: "+", label: "Completed Projects" },
-  { value: 90, suffix: "%", label: "Client Retention Rate" },
+  { value: 1, suffix: "+", label: "Internships Completed" },
+  { value: 8, suffix: "+", label: "Personal & Academic Projects" },
+  { value: 3, suffix: "+", label: "Full-Stack Applications Deployed" },
+  { value: 5, suffix: "+", label: "Technologies Mastered" },
 ];
 
 const logoIconsList = [
@@ -73,18 +74,18 @@ const logoIconsList = [
 const abilities = [
   {
     imgPath: "/images/seo.png",
-    title: "Quality Focus",
-    desc: "Delivering high-quality results while maintaining attention to every detail.",
+    title: "Problem-Solving Mindset",
+    desc: "I enjoy building practical tech solutions — from placement portals to AI-powered systems — that solve real-world problems.",
   },
   {
     imgPath: "/images/chat.png",
-    title: "Reliable Communication",
-    desc: "Keeping you updated at every step to ensure transparency and clarity.",
+   title: "Rapid Learner",
+    desc: "I quickly adapt to new tools and technologies like LangChain, Flask, Prisma, or blockchain when a project demands it.",
   },
   {
     imgPath: "/images/time.png",
-    title: "On-Time Delivery",
-    desc: "Making sure projects are completed on schedule, with quality & attention to detail.",
+    title: "Consistent & Focused",
+    desc: "Balancing internships, college, and projects has taught me how to stay consistent and finish what I start.",
   },
 ];
 
@@ -146,42 +147,35 @@ const techStackIcons = [
 
 const expCards = [
   {
-    review: "Adrian brought creativity and technical expertise to the team, significantly improving our frontend performance. His work has been invaluable in delivering faster experiences.",
-    imgPath: "/images/exp1.png",
-    logoPath: "/images/logo1.png",
-    title: "Frontend Developer",
-    date: "January 2023 - Present",
+    review:
+      "Vikas built a robust full-stack system that streamlined our cybersecurity team's operations. His contribution was impactful in automating manual tasks and improving internal workflows.",
+    imgPath: "/images/Arcolab.png", // replace with your image path
+    logoPath: "/images/Arcolab.ico", // replace with your logo path
+    title: "Full Stack Developer Intern – Arcolab Private Limited",
+    date: "November 2024 – March 2025",
     responsibilities: [
-      "Developed and maintained user-facing features for the Hostinger website.",
-      "Collaborated closely with UI/UX designers to ensure seamless user experiences.",
-      "Optimized web applications for maximum speed and scalability.",
+      "Designed, developed, and deployed a web application for internal Cybersecurity operations.",
+      "Created an ITSM-ticketing system for managing XDR incidents, reducing manual effort.",
+      "Built modules for Security Patch tracking, USB control, and IOC blocking to enhance endpoint protection.",
+      "Worked closely with the internal security team to gather requirements and ensure smooth integration.",
+      "Tech Stack: MongoDB, SQL, SvelteKit, Node.js, Tailwind CSS",
     ],
   },
   {
-    review: "Adrian’s contributions to Docker's web applications have been outstanding. He approaches challenges with a problem-solving mindset.",
-    imgPath: "/images/exp2.png",
-    logoPath: "/images/logo2.png",
-    title: "Full Stack Developer",
-    date: "June 2020 - December 2023",
+    review:
+      "Vikas demonstrated a strong understanding of web fundamentals and built clean, responsive web applications that contributed to real-time user engagement.",
+    imgPath: "/images/pu.png", // replace with your image path
+    logoPath: "/images/pupilfirst.ico", // replace with your logo path
+    title: "Full Stack Developer Intern - Pupilfirst",
+    date: "September 2024 - October 2024",
     responsibilities: [
-      "Led the development of Docker's web applications, focusing on scalability.",
-      "Worked with backend engineers to integrate APIs seamlessly with the frontend.",
-      "Contributed to open-source projects that were used with the Docker ecosystem.",
-    ],
-  },
-  {
-    review: "Adrian’s work on Appwrite’s mobile app brought a high level of quality and efficiency. He delivered solutions that enhanced our mobile experience & meet our product goals.",
-    imgPath: "/images/exp3.png",
-    logoPath: "/images/logo3.png",
-    title: "React Native Developer",
-    date: "March 2019 - May 2020",
-    responsibilities: [
-      "Built cross-platform mobile apps using React Native, integrating with Appwrite's backend services.",
-      "Improved app performance and user experience through code optimization and testing.",
-      "Coordinated with the product team to implement features based on feedback.",
+      "Developed optimized, responsive websites using Node.js, Express.js, JavaScript, HTML, CSS, and Bootstrap.",
+      "Implemented dynamic features to improve interactivity and user flow.",
+      "Collaborated with senior developers to debug and enhance frontend performance.",
     ],
   },
 ];
+
 
 const expLogos = [
   {
