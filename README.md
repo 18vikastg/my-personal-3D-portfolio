@@ -1,30 +1,29 @@
 <div align="center">
 
+<h3 align="center">🚀 My Personal Interactive 3D Portfolio</h3>
 
-  <h3 align="center">🚀 My Personal Interactive 3D Portfolio</h3>
+<div align="center">
+A fully animated and immersive portfolio powered by React Three Fiber, GSAP & Tailwind CSS. Designed for developers who want to showcase skills in a unique 3D environment.
+</div>
 
-  <div align="center">
-    A fully animated and immersive portfolio powered by React Three Fiber, GSAP & Tailwind CSS. Designed for developers who want to showcase skills in a unique 3D environment.
-  </div>
 </div>
 
 ---
 
 ## 📋 Table of Contents
 
-1. 🤖 [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🎨 [Assets](#assets)
-6. 🚀 [More Resources](#more-resources)
+1. [🤖 Introduction](#introduction)
+2. [⚙️ Tech Stack](#tech-stack)
+3. [🔋 Features](#features)
+4. [🤸 Quick Start](#quick-start)
+5. [🎨 Assets](#assets)
+6. [🚀 More Resources](#more-resources)
 
 ---
 
 ## 🤖 Introduction
 
-This 3D Portfolio website is built to stand out. With smooth animations, responsive layouts, and a completely interactive experience, it’s the perfect personal branding tool for developers, designers, or freelancers.
-
+This 3D Portfolio website is built to stand out. With smooth animations, responsive layouts, and a completely interactive experience, it's the perfect personal branding tool for developers, designers, or freelancers.
 
 ---
 
@@ -67,8 +66,6 @@ git clone https://github.com/18vikastg/my-personal-3D-portfolio.git
 cd my-personal-3D-portfolio
 📦 Installing Dependencies
 bash
-Copy
-Edit
 npm install
 # or
 yarn install
@@ -76,39 +73,31 @@ yarn install
 Create a .env file in the root directory and add the following:
 
 env
-Copy
-Edit
 VITE_APP_EMAILJS_SERVICE_ID=your_service_id
 VITE_APP_EMAILJS_TEMPLATE_ID=your_template_id
 VITE_APP_EMAILJS_PUBLIC_KEY=your_public_key
-👉 Get your credentials from EmailJS.
+Get your credentials from EmailJS.
 
 🚀 Running the Project
 bash
-Copy
-Edit
 npm run dev
 # or
 yarn dev
 Your app will be available at http://localhost:5173
 
-
+� Assets
 React Three Fiber for simplifying 3D development in React
 
 The open-source community ❤️
 
+🚀 More Resources
+Three.js Documentation
+
+React Three Fiber Documentation
+
+GSAP Documentation
+
+<div align="center">
 Crafted by Vikas T G | © 2025
 
-yaml
-Copy
-Edit
-
----
-
-Let me know if you want me to add:
-- GitHub stars, forks, license badges  
-- Live demo link  
-- Project screenshots or GIFs  
-- Custom footer or social links  
-
-
+</div> ```
