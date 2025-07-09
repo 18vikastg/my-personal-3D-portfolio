@@ -11,7 +11,7 @@ A fully animated and immersive portfolio powered by React Three Fiber, GSAP & Ta
 ## 🎨 Project Preview
 
 <div align="center">
-  <img src="3dportfolio.png" alt="3D Portfolio Screenshot" width="800"/>
+  <img src="WhatsApp Image 2025-07-09 at 2.20.34 PM.jpeg" alt="3D Portfolio Screenshot" width="800"/>
   <br/>
   <em>Screenshot of my interactive 3D portfolio</em>
 </div>
