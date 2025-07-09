@@ -107,7 +107,7 @@ React Three Fiber Documentation
 
 GSAP Documentation
 
-<div align="center">
+
 Crafted by Vikas T G | © 2025
 
-</div> ```
+
