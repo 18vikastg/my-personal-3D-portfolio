@@ -46,6 +46,12 @@ const ShowCaseSection = () => {
 
   const projects = [
     {
+  title: "onebox",
+  description: "A comprehensive multi-tenant email synchronization platform with AI-powered categorization, real-time sync, and intelligent reply suggestions using RAG (Retrieval-Augmented Generation).",
+  image: "/images/onebox.jpeg",
+  link: "https://github.com/18vikastg/onebox"
+    },
+    {
       title: "AI Mock Interview",
       description: "An advanced, interactive AI-powered mock interview application built with Next.js, Tailwind CSS, Gemini API, PostgreSQL, and Drizzle ORM.",
       image: "/images/Ai-Mock_Interview.png",
@@ -80,7 +86,8 @@ const ShowCaseSection = () => {
       description: "A blockchain-based system that transforms government fund allocation using Ethereum smart contracts and AI-driven document verification.",
       image: "/images/.jpeg",
       link: "https://github.com/18vikastg/fund-managemnet"
-    }
+    },
+
   ]
 
   return (

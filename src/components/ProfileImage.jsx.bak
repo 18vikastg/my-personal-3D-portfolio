@@ -1,0 +1,50 @@
+import React from 'react';
+
+// Simplified approach focusing on displaying the image in its native resolution
+const ProfileImage = () => {
+  return (
+    <div className="relative flex-shrink-0">
+      {/* Create a fixed-size circular mask */}
+      <div 
+        className="md:w-40 md:h-40 w-32 h-32 rounded-full border-2 border-white-50/30 overflow-hidden bg-black"
+        style={{
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+        }}
+      >
+        {/* Display image at natural size and position it within the circle */}
+        import React from 'react';
+
+const ProfileImage = () => {
+  return (
+    <div className="relative flex-shrink-0">
+      <div 
+        className="md:w-40 md:h-40 w-32 h-32 rounded-full border-2 border-white-50/30 overflow-hidden bg-black"
+        style={{
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+        }}
+      >
+        <img 
+          src="/images/WhatsApp Image 2025-07-09 at 2.20.34 PM.jpeg"
+          alt="Vikas TG"
+          className="w-full h-full object-cover"
+          style={{
+            objectPosition: 'center 30%',
+            imageRendering: 'high-quality'
+          }}
+          onError={(e) => {
+            console.error('Image failed to load properly');
+            e.target.src = "/images/person.png";
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default ProfileImage;
+      </div>
+    </div>
+  );
+};
+
+export default ProfileImage;

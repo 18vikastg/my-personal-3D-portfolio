@@ -5,6 +5,7 @@ import HeroExperience from '../components/HeroModels/HeroExperience'
 import { useGSAP }  from '@gsap/react';
 import gsap from 'gsap';
 import AnimatedCounter from '../components/AnimatedCounter';
+import ProfileImage from '../components/ProfileImage';
 
 
 const Hero = () => {
@@ -32,6 +33,16 @@ const Hero = () => {
       <div className='hero-layout'>
         {/*LEFT: HERO CONTENT*/}
         <header className='flex flex-col justify-center md:w-full w-screen md:px-20 px-5'>
+          <div className='flex md:flex-row flex-col md:items-center items-center gap-6 mb-10'>
+            <ProfileImage />
+            <div className='md:text-left text-center'>
+              <h2 className='text-white-50 md:text-3xl text-2xl font-semibold'>Vikas T G</h2>
+              <p className='text-white-50/80 md:text-lg text-base mt-1'>Full Stack Developer</p>
+              <a href="mailto:vikastg2000@gmail.com" className='text-white-50/70 md:text-base text-sm mt-1 hover:text-white-50 transition-colors duration-300'>
+                vikastg2000@gmail.com
+              </a>
+            </div>
+          </div>
 
           <div className='flex flex-col gap-7'>
             <div className='hero-text'>
