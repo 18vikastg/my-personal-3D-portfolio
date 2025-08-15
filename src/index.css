@@ -202,11 +202,11 @@ section {
     }
   }
 
-  .cta-wrapper {
+  .cta-wrapper, .download-wrapper {
     @apply relative z-20 cursor-pointer;
   }
 
-  .cta-button {
+  .cta-button, .download-button {
     @apply px-4 py-4 rounded-lg bg-black-200 flex justify-center items-center relative cursor-pointer overflow-hidden;
 
     .bg-circle {
@@ -226,6 +226,15 @@ section {
 
       img {
         @apply size-5 xl:-translate-y-32 translate-y-0 animate-bounce group-hover:translate-y-0 transition-all duration-500;
+      }
+    }
+    
+    .download-icon {
+      @apply group-hover:bg-white-50 size-10 rounded-full absolute right-10 top-1/2 
+        -translate-y-1/2 flex justify-center items-center overflow-hidden text-white-50;
+      
+      svg {
+        @apply size-5 xl:-translate-y-32 translate-y-0 group-hover:translate-y-0 transition-all duration-500;
       }
     }
   }

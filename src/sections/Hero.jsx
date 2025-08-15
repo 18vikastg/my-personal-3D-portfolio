@@ -1,6 +1,7 @@
 import React from 'react'
 import { words } from '../constants'
 import Button from '../components/Button'
+import DownloadButton from '../components/DownloadButton'
 import HeroExperience from '../components/HeroModels/HeroExperience'
 import { useGSAP }  from '@gsap/react';
 import gsap from 'gsap';
@@ -73,11 +74,18 @@ const Hero = () => {
                   pointer-events-none'>
                     Hi, I'm Vikas T G, a developer based in India with a passion for code. 
                   </p>
-                  <Button 
-                  className='md:w-80 md:h-16 w-60 h-12'
-                  id='button'
-                  text='See my work'
-                  />
+                  <div className='flex md:flex-row flex-col gap-4'>
+                    <Button 
+                      className='md:w-60 md:h-16 w-60 h-12'
+                      id='button'
+                      text='See my work'
+                    />
+                    <DownloadButton 
+                      className='md:w-60 md:h-16 w-60 h-12 cta-wrapper'
+                      text='Download Resume'
+                      link='/Vikas_Resume .pdf'
+                    />
+                  </div>
           </div>
         </header>
         {/*RIGHT: 3D MODEL*/}
