@@ -83,7 +83,7 @@ const Hero = () => {
                     <DownloadButton 
                       className='md:w-60 md:h-16 w-60 h-12 cta-wrapper'
                       text='Download Resume'
-                      link='/Vikas_T_G_Resume.pdf'
+                      link='/Vikas_CV.pdf'
                     />
                   </div>
           </div>
