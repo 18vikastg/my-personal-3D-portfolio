@@ -80,14 +80,7 @@ const ShowCaseSection = () => {
       description: "A custom-built version of Visual Studio Code with Wingman AI seamlessly integrated as a native coding assistant.",
       image: "/images/wingman-native.png",
       link: "https://github.com/18vikastg/vscode-wingman-native"
-    },
-    {
-      title: "FundVerify",
-      description: "A blockchain-based system that transforms government fund allocation using Ethereum smart contracts and AI-driven document verification.",
-      image: "/images/.jpeg",
-      link: "https://github.com/18vikastg/fund-managemnet"
-    },
-
+    }
   ]
 
   return (
