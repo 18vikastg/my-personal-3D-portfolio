@@ -36,6 +36,12 @@ section {
   .flex-col-center {
     @apply flex flex-col justify-center items-center;
   }
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
 }
 
 @layer components {

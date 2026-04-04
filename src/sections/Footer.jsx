@@ -12,6 +12,11 @@ const socialLinks = [
     icon: <FaGithub size={24} />,
   },
   {
+    name: "HEALTHBOTS Org",
+    url: "https://github.com/HEALTHBOTS",
+    icon: <FaGithub size={24} />,
+  },
+  {
     name: "Instagram",
     url: "https://www.instagram.com/vikas__t__g/",
     icon: <FaInstagram size={24} />,
@@ -33,7 +38,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="flex flex-col justify-center">
-          <p>Terms & Conditions</p>
+          <p className="text-white/40 text-sm">vikastg.vercel.app</p>
         </div>
         <div className="socials">
           {socialLinks.map((social, index) => (
@@ -44,6 +49,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="icon"
               aria-label={social.name}
+              title={social.name}
             >
               {social.icon}
             </a>

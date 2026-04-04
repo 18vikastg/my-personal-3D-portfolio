@@ -32,6 +32,7 @@ const TechStack = () => {
         { id: "java", name: "Java", imgKey: "java" },
         { id: "javascript", name: "JavaScript", imgKey: "javascript" },
         { id: "typescript", name: "TypeScript", imgKey: "typescript" },
+        { id: "python", name: "Python", imgKey: "python" },
         { id: "c", name: "C", imgKey: "c" }
       ]
     },
@@ -75,6 +76,7 @@ const TechStack = () => {
       sub: "🛠️ Development Tools",
       items: [
         { id: "git", name: "Git", imgKey: "git" },
+        { id: "docker", name: "Docker", imgKey: "docker" },
         { id: "linux", name: "Linux", imgKey: "linux" },
         { id: "postman", name: "Postman", imgKey: "postman" }
       ]
@@ -85,8 +87,8 @@ const TechStack = () => {
     <div id="skills" className="flex-center section-padding">
       <div className="w-full h-full md:px-10 px-5">
         <TitleHeader
-          title="How I Can Contribute & My Key Skills"
-          sub="🤝 What I Bring to the Table"
+          title="Tech Stack & Expertise"
+          sub="🛠️ Tools, languages, and frameworks I build with"
         />
 
         {/* 3D Models Section */}

@@ -13,8 +13,8 @@ const navLinks = [
     link: "#skills",
   },
   {
-    name: "Testimonials",
-    link: "#testimonials",
+    name: "Contact",
+    link: "#contact",
   },
 ];
 
@@ -30,10 +30,10 @@ const words = [
 ];
 
 const counterItems = [
-  { value: 1, suffix: "+", label: "Internships Completed" },
-  { value: 8, suffix: "+", label: "Personal & Academic Projects" },
-  { value: 3, suffix: "+", label: "Full-Stack Applications Deployed" },
-  { value: 5, suffix: "+", label: "Technologies Mastered" },
+  { value: 3, suffix: "+", label: "Internships Completed" },
+  { value: 10, suffix: "+", label: "Projects Built & Deployed" },
+  { value: 2, suffix: "", label: "GitHub Organizations" },
+  { value: 15, suffix: "+", label: "Technologies Mastered" },
 ];
 
 const logoIconsList = [
@@ -53,18 +53,18 @@ const logoIconsList = [
 const abilities = [
   {
     imgPath: "/images/seo.png",
-    title: "Problem-Solving Mindset",
-    desc: "I enjoy building practical tech solutions — from placement portals to AI-powered systems — that solve real-world problems.",
+    title: "Engineering Mindset",
+    desc: "I design scalable, production-ready systems — from AI-powered platforms to real-time queue management — with clean architecture and measurable impact.",
   },
   {
     imgPath: "/images/chat.png",
-    title: "Rapid Learner",
-    desc: "I quickly adapt to new tools and technologies like LangChain, Flask, Prisma, or blockchain when a project demands it.",
+    title: "Full-Stack Expertise",
+    desc: "Proficient across the entire stack: React, Node.js, Python, FastAPI, PostgreSQL, Docker — building end-to-end products that ship.",
   },
   {
     imgPath: "/images/time.png",
-    title: "Consistent & Focused",
-    desc: "Balancing internships, college, and projects has taught me how to stay consistent and finish what I start.",
+    title: "Consistent Deliverer",
+    desc: "Track record of completing internships, open-source contributions, and side projects with attention to quality, deadlines, and real-world constraints.",
   },
 ];
 
@@ -111,29 +111,41 @@ const techStackIcons = [
 
 const expCards = [
   {
-    review: "Vikas built a robust full-stack system that streamlined our cybersecurity team's operations...",
+    review: "Vikas is currently driving automation and quality improvements across our engineering workflows with remarkable initiative.",
+    imgPath: "/images/Arcolab.png",
+    logoPath: "/images/Arcolab.ico",
+    title: "Software Developer Intern – Arcolab Private Limited",
+    date: "January 2026 – Present",
+    responsibilities: [
+      "Collaborating in Agile/Scrum sprints to customize and extend an open-source platform, developing internal tools that automate operational workflows and reduce manual effort by 25%.",
+      "Developed custom plugins and feature modules with unit testing (Jest) to support company-specific requirements, achieving 95% test coverage.",
+      "Implemented scalable RESTful API services and frontend components with Docker containerization, enabling robust internal data management for 50+ users.",
+      "Stack: React.js, Node.js, TypeScript, Docker, PostgreSQL, Jest",
+    ],
+  },
+  {
+    review: "Vikas built a robust full-stack system that streamlined our cybersecurity team's operations. His ability to understand security requirements and translate them into working software was impressive.",
     imgPath: "/images/Arcolab.png",
     logoPath: "/images/Arcolab.ico",
     title: "Full Stack Developer Intern – Arcolab Private Limited",
     date: "November 2024 – March 2025",
     responsibilities: [
-      "Designed, developed, and deployed a web application for internal Cybersecurity operations.",
-      "Created an ITSM-ticketing system for managing XDR incidents, reducing manual effort.",
-      "Built modules for Security Patch tracking, USB control, and IOC blocking to enhance endpoint protection.",
-      "Worked closely with the internal security team to gather requirements and ensure smooth integration.",
-      "Tech Stack: MongoDB, SQL, SvelteKit, Node.js, Tailwind CSS",
+      "Developed and deployed a full-stack internal web application for the Cybersecurity division, streamlining ticket handling processes.",
+      "Built modules for Security Patch Management, USB Access Control, and IOC Blocking, improving endpoint security compliance.",
+      "Designed a custom ITSM ticketing system that reduced resolution time and minimized manual workload.",
+      "Stack: React.js, Node.js, Tailwind CSS, MongoDB",
     ],
   },
   {
-    review: "Vikas demonstrated a strong understanding of web fundamentals...",
+    review: "Vikas demonstrated strong understanding of web fundamentals and collaborated effectively with our engineering team.",
     imgPath: "/images/pu.png",
     logoPath: "/images/pupilfirst.ico",
-    title: "Full Stack Developer Intern - Pupilfirst",
-    date: "September 2024 - October 2024",
+    title: "Full Stack Developer Intern – Pupilfirst",
+    date: "September 2024 – October 2024",
     responsibilities: [
-      "Developed optimized, responsive websites using Node.js, Express.js, JavaScript, HTML, CSS, and Bootstrap.",
-      "Implemented dynamic features to improve interactivity and user flow.",
-      "Collaborated with senior developers to debug and enhance frontend performance.",
+      "Built responsive web applications using Node.js, Express.js, HTML, CSS, and Bootstrap.",
+      "Implemented dynamic frontend features and strengthened understanding of full-stack workflows.",
+      "Collaborated with senior developers in code reviews and debugging, enhancing problem-solving skills.",
     ],
   },
 ];
@@ -164,12 +176,13 @@ const socialImgs = [
 // Tech stack images object
 const techStackImages = {
   java: "/images/java-original.svg",
-  javascript: "/images/javascript-new.svg",  // Updated to new path
+  javascript: "/images/javascript-new.svg",
   typescript: "/images/typescript-original.svg",
-  c: "/images/c-1.svg",                     // Updated to new path
+  python: "/images/python-logo.svg",
+  c: "/images/c-1.svg",
   html: "/images/html5-original.svg",
   css: "/images/css3-original.svg",
-  react: "/images/react.js.svg",            // Updated to new path
+  react: "/images/react.js.svg",
   svelte: "/images/svelte-original.svg",
   express: "/images/express-original.svg",
   node: "/images/nodejs-original.svg",
@@ -177,12 +190,13 @@ const techStackImages = {
   mongodb: "/images/mongodb-original.svg",
   mysql: "/images/mysql-original.svg",
   postgresql: "/images/postgresql-original.svg",
-  bootstrap: "/images/bootstrap.svg",        // Updated to new path
-  tailwind: "/images/tailwind-css.svg",     // Updated to new path
+  bootstrap: "/images/bootstrap.svg",
+  tailwind: "/images/tailwind-css.svg",
   bulma: "/images/bulma-plain.svg",
-  git: "/images/git-icon-logo.svg",         // Updated to new path
+  git: "/images/git-icon-logo.svg",
   linux: "/images/linux-original.svg",
-  postman: "/images/getpostman-icon.svg"
+  postman: "/images/getpostman-icon.svg",
+  docker: "/images/docker-original.svg",
 };
 export {
   words,

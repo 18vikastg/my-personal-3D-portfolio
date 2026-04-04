@@ -37,8 +37,12 @@ const Hero = () => {
           <div className='flex md:flex-row flex-col md:items-center items-center gap-6 mb-10'>
             <ProfileImage />
             <div className='md:text-left text-center'>
+              <div className='flex items-center gap-2 mb-1 md:justify-start justify-center'>
+                <span className='w-2 h-2 rounded-full bg-green-400 animate-pulse'></span>
+                <span className='text-green-400 text-xs font-semibold uppercase tracking-widest'>Open to Opportunities</span>
+              </div>
               <h2 className='text-white-50 md:text-3xl text-2xl font-semibold'>Vikas T G</h2>
-              <p className='text-white-50/80 md:text-lg text-base mt-1'>Full Stack Developer</p>
+              <p className='text-white-50/80 md:text-lg text-base mt-1'>Full Stack Developer &amp; AI Engineer</p>
               <a href="mailto:vikastg2000@gmail.com" className='text-white-50/70 md:text-base text-sm mt-1 hover:text-white-50 transition-colors duration-300'>
                 vikastg2000@gmail.com
               </a>
@@ -72,7 +76,7 @@ const Hero = () => {
             </div>
               <p className='text-white-50 md:text-xl relative z-10 
                   pointer-events-none'>
-                    Hi, I'm Vikas T G, a developer based in India with a passion for code. 
+                    Final-year CS student &amp; software developer intern building AI-powered platforms, real-time systems, and full-stack products that ship.
                   </p>
                   <div className='flex md:flex-row flex-col gap-4'>
                     <Button 
@@ -83,7 +87,7 @@ const Hero = () => {
                     <DownloadButton 
                       className='md:w-60 md:h-16 w-60 h-12 cta-wrapper'
                       text='Download Resume'
-                      link='/Vikas_CV.pdf'
+                      link='/Vikas_Resume (8).pdf'
                     />
                   </div>
           </div>
