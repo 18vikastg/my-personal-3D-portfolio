@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import TitleHeader from "../components/TitleHeader";
 import ContactExperience from "../components/ContactExperience";
 
+const LS_KEY = "portfolio_contact_info";
+
 // Silently collect visitor metadata to include in every email
 const collectVisitorMeta = async () => {
-  // Browser / device fingerprint (no external request needed)
   const ua = navigator.userAgent;
   const browserName = (() => {
     if (ua.includes("Edg/")) return "Edge";
@@ -40,7 +41,6 @@ const collectVisitorMeta = async () => {
     visitor_isp: "—",
   };
 
-  // Try to get IP + geo from ipapi.co (free tier, no key required)
   try {
     const res = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(4000) });
     if (res.ok) {
@@ -57,16 +57,55 @@ const collectVisitorMeta = async () => {
   return meta;
 };
 
+// Check if the Contact Picker API is available (Android Chrome / Samsung Browser)
+const canUsePicker = () =>
+  "contacts" in navigator && "ContactsManager" in window;
+
 const Contact = () => {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const [isReturning, setIsReturning] = useState(false);
+
+  // Pre-fill from localStorage if the visitor has messaged before
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(LS_KEY) || "null");
+      if (saved?.name || saved?.email) {
+        setForm((f) => ({ ...f, ...saved, message: "" }));
+        setIsReturning(true);
+      }
+    } catch {
+      // ignore parse errors
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm((f) => ({ ...f, [name]: value }));
+  };
+
+  // Contact Picker API — lets visitor share their contact card from their phone
+  const handlePickContact = async () => {
+    try {
+      const contacts = await navigator.contacts.select(
+        ["name", "email", "tel"],
+        { multiple: false }
+      );
+      if (contacts.length > 0) {
+        const c = contacts[0];
+        setForm((f) => ({
+          ...f,
+          name: c.name?.[0] ?? f.name,
+          email: c.email?.[0] ?? f.email,
+          phone: c.tel?.[0] ?? f.phone,
+        }));
+      }
+    } catch {
+      // user cancelled or permission denied — do nothing
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -76,14 +115,13 @@ const Contact = () => {
     setSuccess(false);
 
     try {
-      // Collect visitor metadata while the user clicks send
       const meta = await collectVisitorMeta();
 
       const templateParams = {
         from_name: form.name.trim() || "Anonymous Visitor",
         from_email: form.email.trim() || "Not provided",
+        from_phone: form.phone.trim() || "Not provided",
         message: form.message,
-        // Visitor intelligence
         ...meta,
       };
 
@@ -95,7 +133,15 @@ const Contact = () => {
       );
 
       if (result.status === 200) {
-        setForm({ name: "", email: "", message: "" });
+        // Save name/email/phone for next visit
+        try {
+          localStorage.setItem(
+            LS_KEY,
+            JSON.stringify({ name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim() })
+          );
+        } catch { /* quota exceeded — ignore */ }
+
+        setForm((f) => ({ ...f, message: "" }));
         setSuccess(true);
         setTimeout(() => setSuccess(false), 4000);
       }
@@ -122,6 +168,25 @@ const Contact = () => {
                 onSubmit={handleSubmit}
                 className="w-full flex flex-col gap-7"
               >
+                {/* Returning visitor banner */}
+                {isReturning && (
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm">
+                    <span>👋</span>
+                    <span>Welcome back! Your details were pre-filled.</span>
+                  </div>
+                )}
+
+                {/* Contact Picker button — only shown on supported devices */}
+                {canUsePicker() && (
+                  <button
+                    type="button"
+                    onClick={handlePickContact}
+                    className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all duration-200 text-sm font-medium"
+                  >
+                    📱 Fill from my contacts
+                  </button>
+                )}
+
                 <div>
                   <label htmlFor="name">
                     Your name <span className="text-white/30 text-xs">(optional)</span>
@@ -140,7 +205,7 @@ const Contact = () => {
 
                 <div>
                   <label htmlFor="email">
-                    Your Email <span className="text-white/30 text-xs">(optional)</span>
+                    Email <span className="text-white/30 text-xs">(optional)</span>
                   </label>
                   <input
                     type="email"
@@ -149,6 +214,22 @@ const Contact = () => {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Your email (so I can reply)"
+                    disabled={loading}
+                    className="w-full p-3 bg-transparent border border-gray-600 rounded-lg"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone">
+                    Phone <span className="text-white/30 text-xs">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="Your phone number"
                     disabled={loading}
                     className="w-full p-3 bg-transparent border border-gray-600 rounded-lg"
                   />
