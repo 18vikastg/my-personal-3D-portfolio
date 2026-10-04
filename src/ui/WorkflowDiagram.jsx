@@ -1,28 +1,28 @@
 /**
- * Illustrative state graph of the kind of workflow the engine runs:
- * a draft moves through preconditions, splits into parallel reviews, joins
- * at approval, and every hop lands in the audit trail. Generic by design —
- * no real process, client or data is depicted.
+ * Explanatory state graph of the kind of workflow the engine runs: a draft
+ * passes a precondition, splits into parallel reviews, joins at approval, and
+ * every hop lands in the audit trail. Generic by design — no real process,
+ * client or data is depicted. Static on purpose: it's a diagram, not a demo.
  */
 
 const W = 120;
-const H = 46;
+const H = 44;
 const nodes = [
-  { id: "draft", label: "Draft", x: 10, y: 107 },
-  { id: "submit", label: "Submitted", x: 175, y: 107 },
-  { id: "qa", label: "QA review", x: 350, y: 37 },
-  { id: "prod", label: "Prod review", x: 350, y: 177 },
-  { id: "approve", label: "Approved", x: 525, y: 107 },
-  { id: "done", label: "Released", x: 690, y: 107 },
+  { id: "draft", label: "Draft", x: 10, y: 98 },
+  { id: "submit", label: "Submitted", x: 175, y: 98 },
+  { id: "qa", label: "QA review", x: 350, y: 30 },
+  { id: "prod", label: "Prod review", x: 350, y: 166 },
+  { id: "approve", label: "Approved", x: 525, y: 98 },
+  { id: "done", label: "Released", x: 690, y: 98 },
 ];
 const by = Object.fromEntries(nodes.map((n) => [n.id, n]));
-const right = (n) => [n.x + W, n.y + H / 2];
-const left = (n) => [n.x, n.y + H / 2];
 const curve = (a, b) => {
-  const [x1, y1] = right(by[a]);
-  const [x2, y2] = left(by[b]);
+  const x1 = by[a].x + W;
+  const y1 = by[a].y + H / 2;
+  const x2 = by[b].x;
+  const y2 = by[b].y + H / 2;
   const mx = (x1 + x2) / 2;
-  return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
+  return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2 - 4},${y2}`;
 };
 const edges = [
   ["draft", "submit"],
@@ -32,65 +32,65 @@ const edges = [
   ["prod", "approve"],
   ["approve", "done"],
 ];
-// Order in which the highlight travels (parallel reviews light up together)
-const step = { draft: 0, submit: 1, qa: 2, prod: 2, approve: 3, done: 4 };
-
 const notes = [
-  { x: 262, y: 30, text: "precondition ✓" },
-  { x: 262, y: 222, text: "delegated →" },
-  { x: 612, y: 88, text: "SLA 24h · escalate" },
+  { x: 262, y: 26, text: "precondition ✓" },
+  { x: 262, y: 236, text: "delegated" },
+  { x: 615, y: 84, text: "SLA → escalate" },
+];
+
+const steps = [
+  ["Draft", ""],
+  ["Submitted", "precondition checked"],
+  ["QA review + Prod review", "in parallel; either can be delegated"],
+  ["Approved", "SLA timer, escalates if late"],
+  ["Released", ""],
 ];
 
 const WorkflowDiagram = () => (
-  <figure className="rounded-3xl border border-line bg-ink-2 p-5 md:p-8">
-    <figcaption className="mb-6 flex flex-wrap items-center justify-between gap-2 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dim">
-      <span>How the engine thinks</span>
-      <span>illustrative — not a real process</span>
-    </figcaption>
-
-    {/* Desktop / tablet: graph */}
-    <svg viewBox="0 0 820 260" className="hidden w-full md:block" role="img" aria-labelledby="wf-desc">
+  <figure className="border-y border-line py-8">
+    <svg viewBox="0 0 820 250" className="hidden w-full md:block" role="img" aria-labelledby="wf-desc">
       <desc id="wf-desc">
         A draft is submitted, passes a precondition, splits into parallel QA and production reviews, joins at approval
         with an SLA and escalation, and is released. Every transition is recorded in the audit trail.
       </desc>
+      <defs>
+        <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L8,4 L0,8 z" fill="#8a877f" />
+        </marker>
+      </defs>
       {edges.map(([a, b]) => (
-        <g key={a + b}>
-          <path d={curve(a, b)} fill="none" stroke="rgb(255 255 255 / 0.12)" strokeWidth="1.5" />
-          <path d={curve(a, b)} fill="none" stroke="#d4ff3a" strokeOpacity="0.55" strokeWidth="1.5" className="edge-flow" />
-        </g>
+        <path key={a + b} d={curve(a, b)} fill="none" stroke="#8a877f" strokeWidth="1.25" markerEnd="url(#arrow)" />
       ))}
       {nodes.map((n) => (
-        <g key={n.id} className="wf-node" style={{ "--d": `${step[n.id] * 0.9}s` }}>
-          <rect x={n.x} y={n.y} width={W} height={H} rx="23" />
-          <text x={n.x + W / 2} y={n.y + H / 2 + 5} textAnchor="middle" className="font-mono text-[13px]">
+        <g key={n.id}>
+          <rect x={n.x} y={n.y} width={W} height={H} rx="6" fill="#121212" stroke="rgb(255 255 255 / 0.22)" />
+          <text x={n.x + W / 2} y={n.y + H / 2 + 5} textAnchor="middle" fill="#f2efe8" className="font-mono text-[13px]">
             {n.label}
           </text>
         </g>
       ))}
       {notes.map((t) => (
-        <text key={t.text} x={t.x} y={t.y} textAnchor={t.anchor ?? "middle"} className="fill-[#8a877f] font-mono text-[11px]">
+        <text key={t.text} x={t.x} y={t.y} textAnchor="middle" fill="#a8a59d" className="font-mono text-[11px]">
           {t.text}
         </text>
       ))}
-      <text x="410" y="252" textAnchor="middle" className="fill-[#8a877f] font-mono text-[11px]">
-        every hop → audit trail (who · what · when)
-      </text>
     </svg>
 
-    {/* Mobile: the same flow as a vertical list */}
-    <ol className="space-y-2 md:hidden" aria-label="Example workflow">
-      {[["Draft"], ["Submitted", "precondition ✓"], ["QA review ∥ Prod review", "parallel · delegated"], ["Approved", "SLA 24h · escalate"], ["Released"]].map(
-        ([label, note], i) => (
-          <li key={label} className="wf-row flex items-center gap-3 rounded-2xl border border-line px-4 py-3" style={{ "--d": `${i * 0.9}s` }}>
-            <span className="font-mono text-xs text-dim">0{i + 1}</span>
-            <span className="font-mono text-sm">{label}</span>
-            {note && <span className="ml-auto text-right font-mono text-[0.65rem] text-dim">{note}</span>}
-          </li>
-        )
-      )}
-      <li className="pt-2 text-center font-mono text-[0.65rem] text-dim">every hop → audit trail</li>
+    {/* Small screens: the same flow, top to bottom */}
+    <ol className="space-y-0 border-l border-line-strong pl-5 md:hidden" aria-label="Example workflow">
+      {steps.map(([label, note]) => (
+        <li key={label} className="relative pb-5 last:pb-0">
+          <span aria-hidden="true" className="absolute -left-[1.6rem] top-2 size-2 rounded-full bg-fg/60" />
+          <span className="font-mono text-sm">{label}</span>
+          {note && <span className="block text-sm text-muted">{note}</span>}
+        </li>
+      ))}
     </ol>
+
+    <figcaption className="mt-6 text-sm leading-relaxed text-muted">
+      How the engine thinks, roughly. Every arrow above is a transition with rules attached, and every transition is
+      written to the audit trail: who, what, when. <span className="text-dim">(Illustrative — not a real process.)</span>
+    </figcaption>
   </figure>
 );
 

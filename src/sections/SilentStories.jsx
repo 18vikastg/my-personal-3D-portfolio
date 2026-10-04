@@ -15,7 +15,7 @@ const SilentStories = () => {
   const scope = useRef(null);
   useReveal(scope);
 
-  // The poster opens like a letterbox as it scrolls into view
+  // The poster opens once, like a letterbox, when it first comes into view
   useGSAP(
     () => {
       if (prefersReducedMotion()) return;
@@ -24,8 +24,9 @@ const SilentStories = () => {
         { clipPath: "inset(40% 0% 40% 0%)" },
         {
           clipPath: "inset(0% 0% 0% 0%)",
-          ease: "none",
-          scrollTrigger: { trigger: "[data-poster]", start: "top 95%", end: "top 45%", scrub: 0.6 },
+          duration: 1.2,
+          ease: "power2.inOut",
+          scrollTrigger: { trigger: "[data-poster]", start: "top 80%", once: true },
         }
       );
     },
@@ -33,32 +34,30 @@ const SilentStories = () => {
   );
 
   return (
-    <section id="silent-stories" ref={scope} aria-labelledby="ss-chapter" className="relative bg-black text-ss-cream">
+    <section id="silent-stories" ref={scope} aria-labelledby="ss-chapter" className="grain relative bg-black text-ss-cream">
       {/* Ink → black: the mood shift */}
-      <div aria-hidden="true" className="h-32 bg-gradient-to-b from-ink to-black md:h-48" />
+      <div aria-hidden="true" className="h-24 bg-gradient-to-b from-ink to-black md:h-36" />
 
       <div className="shell">
         {/* Outside the IDE */}
-        <p data-reveal="fade" className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-          <span>07</span>
-          <span className="h-px w-10 bg-line" aria-hidden="true" />
-          <span>Outside the IDE</span>
+        <p data-reveal className="eyebrow">
+          Outside the IDE
         </p>
-        <h2 id="ss-chapter" data-reveal className="display mt-6 max-w-[17ch] text-[clamp(2.5rem,7vw,6rem)] text-fg">
+        <h2 id="ss-chapter" data-reveal className="display mt-4 max-w-[20ch] text-[clamp(2rem,4.6vw,3.75rem)] text-fg">
           Code is one way I build things. <span className="serif-accent text-ss-cream">Stories are another.</span>
         </h2>
 
-        <ul className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line md:mt-16 md:grid-cols-4">
+        <ul className="mt-10 grid grid-cols-2 gap-x-6 md:mt-14 md:grid-cols-4">
           {sides.map((s) => {
             const here = s.href === "#silent-stories";
             return (
-              <li key={s.role} data-reveal className="bg-black">
+              <li key={s.role} data-reveal className="border-t border-line">
                 <a
                   href={s.href}
                   aria-current={here ? "location" : undefined}
-                  className={`block h-full p-5 transition-colors md:p-6 ${here ? "" : "hover:bg-fg/[0.03]"}`}
+                  className="group block h-full py-4"
                 >
-                  <span className={`block text-lg font-medium tracking-tight md:text-xl ${here ? "text-ss-red" : "text-fg"}`}>
+                  <span className={`block font-medium md:text-lg ${here ? "text-ss-red" : "text-fg group-hover:underline group-hover:underline-offset-4"}`}>
                     {s.role}
                   </span>
                   <span className="mt-1 block text-sm text-muted">{s.does}</span>

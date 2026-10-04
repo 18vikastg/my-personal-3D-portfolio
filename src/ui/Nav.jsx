@@ -52,15 +52,15 @@ const Nav = () => {
       }`}
     >
       <div className="shell flex h-16 items-center justify-between">
-        <a href="#top" className="group flex items-center gap-2.5 font-medium tracking-tight" aria-label="Vikas T G — back to top">
-          <span className="grid size-7 place-items-center rounded-full bg-lime font-mono text-xs font-semibold text-ink transition-transform duration-500 group-hover:rotate-[360deg]">
+        <a href="#top" className="flex min-h-11 items-center gap-2.5 font-medium tracking-tight" aria-label="Vikas T G — back to top">
+          <span className="grid size-7 place-items-center rounded-full bg-lime font-mono text-xs font-semibold text-ink">
             v
           </span>
           <span>vikas t g</span>
         </a>
 
         <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex items-center">
             {nav.map(({ label, href }) => {
               const isActive = active === href.slice(1);
               return (
@@ -68,8 +68,8 @@ const Nav = () => {
                   <a
                     href={href}
                     aria-current={isActive ? "true" : undefined}
-                    className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                      isActive ? "bg-fg/10 text-fg" : "text-muted hover:text-fg"
+                    className={`px-3 py-2 text-sm underline-offset-[6px] transition-colors lg:px-4 ${
+                      isActive ? "text-fg underline decoration-lime decoration-2" : "text-muted hover:text-fg"
                     }`}
                   >
                     {label}
@@ -116,25 +116,24 @@ const Nav = () => {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-ink md:hidden"
+        className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-ink md:hidden"
       >
-        <nav aria-label="Mobile" className="shell flex h-full flex-col justify-between py-10">
-          <ul className="space-y-2">
+        <nav aria-label="Mobile" className="shell py-6">
+          <ul>
             {[...nav, { label: "Contact", href: "#contact" }].map(({ label, href }, i) => (
               <li key={href}>
                 <a
                   ref={i === 0 ? firstLinkRef : undefined}
                   href={href}
                   onClick={close}
-                  className="flex items-baseline gap-4 py-2 text-5xl font-medium tracking-[-0.04em]"
+                  className="block border-b border-line py-3.5 text-xl font-medium"
                 >
-                  <span className="font-mono text-xs text-dim">0{i + 1}</span>
                   {label}
                 </a>
               </li>
             ))}
           </ul>
-          <div className="flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <a href={profile.resume} target="_blank" rel="noopener" className="btn btn-ghost" onClick={close}>
               Résumé (PDF)
             </a>

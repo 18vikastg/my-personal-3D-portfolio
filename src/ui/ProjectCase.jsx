@@ -1,103 +1,127 @@
 import { useId, useState } from "react";
-import { FiArrowUpRight, FiGithub, FiPlus } from "react-icons/fi";
-import ProjectVisual from "./ProjectVisual";
+import { FiArrowUpRight, FiPlus } from "react-icons/fi";
 
-const Fact = ({ label, children }) => (
-  <div className="border-t border-line pt-4">
-    <dt className="eyebrow">{label}</dt>
-    <dd className="mt-2 leading-relaxed text-fg/85">{children}</dd>
-  </div>
+const ProjectLinks = ({ project }) => (
+  <p className="flex flex-wrap gap-x-6 gap-y-2">
+    {project.links.live && (
+      <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-1 font-medium text-lime">
+        Visit live <FiArrowUpRight aria-hidden="true" />
+        <span className="sr-only"> — {project.title}</span>
+      </a>
+    )}
+    {project.links.github && (
+      <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-1">
+        Source on GitHub <FiArrowUpRight aria-hidden="true" />
+        <span className="sr-only"> — {project.title}</span>
+      </a>
+    )}
+  </p>
 );
 
-/** One project told as a short case study: problem → build → engineering → what it shows. */
-const ProjectCase = ({ project, index }) => {
+/** Expandable "how it's built" notes. A real button, so it works on touch and keyboard. */
+const EngineeringNotes = ({ notes }) => {
   const [open, setOpen] = useState(false);
-  const notesId = useId();
-  const flip = index % 2 === 1;
-  const number = String(index + 1).padStart(2, "0");
-
+  const id = useId();
   return (
-    <article aria-labelledby={`${project.slug}-title`} className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-      <div data-reveal className={`min-w-0 self-start lg:sticky lg:top-24 lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
-        <ProjectVisual project={project} />
-      </div>
-
-      <div className={`flex min-w-0 flex-col lg:col-span-5 ${flip ? "lg:order-1" : ""}`}>
-        <div data-reveal className="flex items-center gap-3">
-          <span className="font-mono text-sm text-dim">{number}</span>
-          <span className="chip" style={{ color: project.accent, borderColor: `${project.accent}55` }}>
-            {project.kind}
-          </span>
-        </div>
-        <h3 id={`${project.slug}-title`} data-reveal className="display mt-5 text-[clamp(2.25rem,4.5vw,3.75rem)]">
-          {project.title}
-        </h3>
-        <p data-reveal className="mt-4 text-xl leading-snug text-muted">
-          {project.tagline}
-        </p>
-
-        <dl data-reveal className="mt-8 space-y-5">
-          <Fact label="The problem">{project.problem}</Fact>
-          <Fact label="What I built">{project.built}</Fact>
-          <Fact label="What it shows">{project.shows}</Fact>
-        </dl>
-
-        <div data-reveal className="mt-6 border-t border-line pt-4">
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            aria-expanded={open}
-            aria-controls={notesId}
-            className="group flex w-full items-center justify-between py-1 text-left"
-          >
-            <span className="eyebrow group-hover:text-fg">Engineering notes</span>
-            <FiPlus
-              aria-hidden="true"
-              className={`size-4 text-muted transition-transform duration-500 ease-(--ease-out-expo) ${open ? "rotate-45" : ""}`}
-            />
-          </button>
-          <div
-            id={notesId}
-            className={`grid transition-[grid-template-rows] duration-500 ease-(--ease-out-expo) ${
-              open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-            }`}
-          >
-            <ul className="space-y-3 overflow-hidden" inert={!open || undefined}>
-              {project.engineering.map((note, i) => (
-                <li key={i} className={`flex gap-3 text-[0.95rem] leading-relaxed text-fg/80 ${i === 0 ? "mt-4" : ""}`}>
-                  <span className="mt-[0.6em] size-1 shrink-0 rounded-full" style={{ background: project.accent }} />
-                  {note}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <ul data-reveal className="mt-6 flex flex-wrap gap-1.5" aria-label="Stack">
-          {project.stack.map((s) => (
-            <li key={s} className="chip">
-              {s}
+    <div className="border-t border-line pt-1">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-controls={id}
+        className="flex min-h-11 w-full items-center justify-between text-left text-sm text-muted hover:text-fg"
+      >
+        How it’s built
+        <FiPlus aria-hidden="true" className={`size-4 transition-transform duration-300 ${open ? "rotate-45" : ""}`} />
+      </button>
+      <div id={id} className={`grid transition-[grid-template-rows] duration-300 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+        <ul className="overflow-hidden" inert={!open || undefined}>
+          {notes.map((note) => (
+            <li key={note} className="flex gap-3 pb-3 text-[0.95rem] leading-relaxed text-fg/80 first:pt-1">
+              <span aria-hidden="true" className="text-dim">
+                –
+              </span>
+              {note}
             </li>
           ))}
         </ul>
-
-        <div data-reveal className="mt-8 flex flex-wrap gap-3">
-          {project.links.live && (
-            <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-              Visit live <FiArrowUpRight aria-hidden="true" />
-              <span className="sr-only"> — {project.title}</span>
-            </a>
-          )}
-          {project.links.github && (
-            <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
-              <FiGithub aria-hidden="true" /> Source
-              <span className="sr-only"> code for {project.title}</span>
-            </a>
-          )}
-        </div>
       </div>
-    </article>
+    </div>
   );
 };
 
-export default ProjectCase;
+const Fact = ({ label, children }) => (
+  <div>
+    <dt className="text-sm text-dim">{label}</dt>
+    <dd className="mt-1 leading-relaxed text-fg/85">{children}</dd>
+  </div>
+);
+
+/** A project with a real screenshot: image first, then the story. */
+export const ProjectCase = ({ project, flip }) => (
+  <article aria-labelledby={`${project.slug}-title`} className="grid gap-8 lg:grid-cols-12 lg:gap-14">
+    <figure data-reveal className={`min-w-0 self-start lg:sticky lg:top-24 lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
+      <img
+        src={project.visual.src}
+        alt={project.visual.alt}
+        loading="lazy"
+        decoding="async"
+        width="1200"
+        height="750"
+        className="aspect-[16/10] w-full rounded-md border border-line object-cover object-top"
+      />
+    </figure>
+
+    <div className={`min-w-0 lg:col-span-5 ${flip ? "lg:order-1" : ""}`}>
+      <p data-reveal className="eyebrow">
+        {project.kind}
+      </p>
+      <h3 id={`${project.slug}-title`} data-reveal className="mt-3 text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium leading-tight tracking-[-0.03em]">
+        {project.title}
+      </h3>
+      <p data-reveal className="mt-2 max-w-[34rem] text-lg leading-snug text-muted">
+        {project.tagline}
+      </p>
+
+      <dl data-reveal className="mt-8 grid gap-6 md:grid-cols-2 md:gap-x-10 lg:grid-cols-1">
+        <Fact label="The problem">{project.problem}</Fact>
+        <Fact label="What I built">{project.built}</Fact>
+        <div className="md:col-span-2 lg:col-span-1">
+          <Fact label="Why it matters">{project.shows}</Fact>
+        </div>
+      </dl>
+
+      <div data-reveal className="mt-8">
+        <EngineeringNotes notes={project.engineering} />
+      </div>
+
+      <p data-reveal className="stack-line mt-6">
+        {project.stack.join(" · ")}
+      </p>
+      <div data-reveal className="mt-5">
+        <ProjectLinks project={project} />
+      </div>
+    </div>
+  </article>
+);
+
+/** A project without screenshots, told in text only. */
+export const ProjectBrief = ({ project }) => (
+  <article aria-labelledby={`${project.slug}-title`} data-reveal className="min-w-0 border-t border-line pt-6">
+    <p className="eyebrow">{project.kind}</p>
+    <h3 id={`${project.slug}-title`} className="mt-3 text-2xl font-medium tracking-[-0.025em] md:text-3xl">
+      {project.title}
+    </h3>
+    <p className="mt-2 text-lg leading-snug text-muted">{project.tagline}</p>
+    <p className="mt-5 max-w-[36rem] leading-relaxed text-fg/85">
+      {project.problem} {project.built}
+    </p>
+    <div className="mt-6">
+      <EngineeringNotes notes={project.engineering} />
+    </div>
+    <p className="stack-line mt-5">{project.stack.join(" · ")}</p>
+    <div className="mt-4">
+      <ProjectLinks project={project} />
+    </div>
+  </article>
+);

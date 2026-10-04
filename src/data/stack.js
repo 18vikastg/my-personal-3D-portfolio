@@ -18,7 +18,7 @@ export const shippedWith = [
   { name: "Express.js", group: "Backend", usedIn: ["PrepLink", "OneBox"] },
   { name: "REST APIs", group: "Backend", usedIn: ["PrepLink", "Arcolab security platform", "Pivot Path"] },
   { name: "Socket.IO", group: "Backend", usedIn: ["Smart Health Queue"] },
-  { name: "NocoBase", group: "Backend", usedIn: ["Pivot Path plugins"] },
+  { name: "Plugin development", group: "Backend", usedIn: ["Pivot Path — plugins on an open-source platform"] },
 
   { name: "PostgreSQL", group: "Data", usedIn: ["Pivot Path schemas", "Smart Health Queue", "AI Mock Interview"] },
   { name: "MongoDB", group: "Data", usedIn: ["PrepLink", "Arcolab security platform"] },

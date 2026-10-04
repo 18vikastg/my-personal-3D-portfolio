@@ -8,7 +8,6 @@ export const lab = [
     tags: ["TypeScript", "VS Code internals", "AI"],
     status: "Experiment",
     href: "https://github.com/18vikastg/vscode-wingman-native",
-    image: "/work/wingman.webp",
   },
   {
     name: "AdGenesis",
@@ -16,7 +15,6 @@ export const lab = [
     tags: ["React", "FastAPI", "PyTorch", "Fabric.js"],
     status: "Live",
     href: "https://adgenesis.vercel.app",
-    image: "/work/adgenesis.webp",
   },
   {
     name: "MuteMate",
@@ -38,7 +36,6 @@ export const lab = [
     tags: ["React", "GSAP"],
     status: "Live",
     href: "https://vikas-animation-site.vercel.app",
-    image: "/work/animation-site.webp",
   },
   {
     name: "Focus Flow",

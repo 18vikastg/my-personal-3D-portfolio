@@ -11,11 +11,15 @@ const links = [
 
 const Footer = () => (
   <footer className="border-t border-line">
-    <div className="shell flex flex-col gap-8 py-10 md:flex-row md:items-end md:justify-between">
+    <div className="shell flex flex-col gap-8 py-10 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <p className="text-lg font-medium tracking-tight">{profile.name}</p>
         <p className="mt-1 max-w-sm text-sm text-muted">
-          Designed and built by me with React, GSAP, Tailwind and an unreasonable amount of filter coffee.
+          Designed and built by me — React, Vite and a little GSAP.{" "}
+          <a href="https://github.com/18vikastg/my-personal-3D-portfolio" target="_blank" rel="noopener noreferrer" className="link-underline text-fg/80">
+            Source
+          </a>
+          .
         </p>
       </div>
       <nav aria-label="Social">
@@ -29,7 +33,7 @@ const Footer = () => (
           ))}
         </ul>
       </nav>
-      <div className="flex items-center justify-between gap-6 md:flex-col md:items-end">
+      <div className="flex items-center justify-between gap-6 lg:flex-col lg:items-end">
         <a href="#top" className="inline-flex items-center gap-2 text-sm text-muted hover:text-fg">
           Back to top <FiArrowUp aria-hidden="true" />
         </a>

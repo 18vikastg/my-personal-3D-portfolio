@@ -54,8 +54,6 @@ export const silentStories = {
     },
     credits: [
       { role: "Story, Concept & Direction", name: "Vikas T G" },
-      { role: "Edit", name: "@ortivoxcorp" },
-      { role: "Special thanks", name: "@_niru_gunnal · @shridhar_math10" },
     ],
   },
 };
@@ -96,7 +94,7 @@ export const principles = [
   },
   {
     title: "When the docs run out, read the source.",
-    body: "Plugin work on a low-code platform means living inside someone else’s codebase. The fastest answer is usually one grep away.",
+    body: "Plugin work on an open-source platform means living inside someone else’s codebase. The fastest answer is usually one grep away.",
   },
 ];
 

@@ -16,17 +16,18 @@ export const pivotPath = {
     { value: 8, suffix: "+", label: "production modules & extensions designed and shipped" },
     { value: 8, suffix: "", label: "engineers now supporting the product" },
   ],
+  // Reads as a sentence: "The engine handles …"
   engine: [
-    "States & transitions",
-    "Parallel branches",
-    "Task assignment",
-    "Approvals",
-    "Authorization",
-    "Preconditions",
-    "Delegation",
-    "SLA & escalation",
-    "Notifications",
-    "Audit trail",
+    "states and transitions",
+    "parallel branches",
+    "task assignment",
+    "approvals",
+    "authorization",
+    "preconditions",
+    "delegation",
+    "SLAs and escalation",
+    "notifications",
+    "a full audit trail",
   ],
   modules: [
     { name: "Workflow execution", note: "the engine everything else runs on" },
@@ -41,12 +42,12 @@ export const pivotPath = {
     { name: "Screen capture", note: "evidence attached to the step" },
   ],
   how: [
-    "Core engine logic in Node.js and TypeScript, built as plugins on a low-code platform (NocoBase).",
+    "Core engine logic in Node.js and TypeScript, built as plugins on an open-source platform.",
     "PostgreSQL schemas and data models for configurable, multi-step workflows.",
     "React + TypeScript dashboards; production deployments with Docker on Linux and Git-based CI/CD.",
     "Agile/Scrum with a team that now maintains and extends what I started.",
   ],
-  stack: ["TypeScript", "React", "Node.js", "PostgreSQL", "NocoBase", "Docker", "Linux", "CI/CD"],
+  stack: ["TypeScript", "React", "Node.js", "PostgreSQL", "Docker", "Linux", "CI/CD"],
 };
 
 export const earlier = {

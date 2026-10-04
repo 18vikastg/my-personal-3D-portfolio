@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { FiArrowUpRight, FiCheck, FiCopy, FiGithub, FiInstagram, FiLinkedin } from "react-icons/fi";
 import { useReveal } from "../lib/motion";
 import { profile, socials } from "../data/site";
-import MagneticLink from "../ui/MagneticLink";
 
 const env = import.meta.env;
 const emailjsReady = Boolean(
@@ -10,7 +9,7 @@ const emailjsReady = Boolean(
 );
 
 const field =
-  "w-full rounded-2xl border border-line-strong bg-transparent px-4 py-3.5 text-fg placeholder:text-dim transition-colors focus:border-lime focus:outline-none";
+  "w-full rounded-md border border-line-strong bg-transparent px-4 py-3.5 text-fg placeholder:text-dim transition-colors focus:border-lime focus:outline-none";
 
 /**
  * Sends through EmailJS when it's configured; otherwise opens the visitor's
@@ -51,11 +50,11 @@ const ContactForm = () => {
     <form onSubmit={submit} className="space-y-4" aria-describedby="form-status">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="eyebrow mb-2 block">Name</span>
+          <span className="mb-2 block text-sm text-muted">Name</span>
           <input name="name" value={form.name} onChange={update} required autoComplete="name" className={field} placeholder="Ada Lovelace" />
         </label>
         <label className="block">
-          <span className="eyebrow mb-2 block">Email</span>
+          <span className="mb-2 block text-sm text-muted">Email</span>
           <input
             name="email"
             type="email"
@@ -69,7 +68,7 @@ const ContactForm = () => {
         </label>
       </div>
       <label className="block">
-        <span className="eyebrow mb-2 block">Message</span>
+        <span className="mb-2 block text-sm text-muted">Message</span>
         <textarea
           name="message"
           value={form.message}
@@ -81,7 +80,7 @@ const ContactForm = () => {
         />
       </label>
       <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" disabled={status === "sending"} className="btn btn-primary !px-6 !py-3.5 disabled:opacity-60">
+        <button type="submit" disabled={status === "sending"} className="btn btn-primary disabled:opacity-60">
           {status === "sending" ? "Sending…" : "Send message"} <FiArrowUpRight aria-hidden="true" />
         </button>
         <p id="form-status" role="status" className="text-sm">
@@ -115,29 +114,25 @@ const Contact = () => {
   return (
     <section id="contact" ref={scope} aria-labelledby="contact-title" className="section border-t border-line">
       <div className="shell">
-        <p data-reveal="fade" className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-          <span>09</span>
-          <span className="h-px w-10 bg-line" aria-hidden="true" />
-          <span>Let’s build</span>
+        <p data-reveal className="eyebrow">
+          Contact
         </p>
-        <h2 id="contact-title" data-reveal className="display mt-6 text-[clamp(3rem,10vw,9rem)]">
-          Building something
-          <br />
-          <span className="serif-accent text-lime">interesting?</span>
+        <h2 id="contact-title" data-reveal className="display mt-4 max-w-[16ch] text-[clamp(2.4rem,6vw,5rem)]">
+          Building something <span className="serif-accent text-lime">interesting?</span>
         </h2>
-        <p data-reveal className="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl">
+        <p data-reveal className="mt-6 max-w-[36rem] text-lg leading-relaxed text-muted">
           I’m open to software engineering roles — in Bengaluru or abroad — and always up for talking about products,
           workflow systems or a weird idea you can’t stop thinking about.
         </p>
 
-        <div className="mt-14 grid gap-14 lg:grid-cols-12">
+        <div className="mt-12 grid gap-12 md:mt-16 lg:grid-cols-12 lg:gap-14">
           <div className="space-y-8 lg:col-span-5">
             <div data-reveal>
-              <p className="eyebrow">Email — fastest</p>
+              <p className="text-sm text-muted">Email is fastest</p>
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 <a
                   href={`mailto:${profile.email}`}
-                  className="link-underline break-all text-2xl font-medium tracking-tight md:text-3xl"
+                  className="link-underline break-all text-2xl font-medium tracking-tight"
                 >
                   {profile.email}
                 </a>
@@ -153,15 +148,15 @@ const Contact = () => {
             </div>
 
             <div data-reveal className="flex flex-wrap gap-3">
-              <MagneticLink href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+              <a href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
                 <FiLinkedin aria-hidden="true" /> LinkedIn
-              </MagneticLink>
-              <MagneticLink href={socials.github} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+              </a>
+              <a href={socials.github} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
                 <FiGithub aria-hidden="true" /> GitHub
-              </MagneticLink>
-              <MagneticLink href={profile.resume} target="_blank" rel="noopener" className="btn btn-ghost">
+              </a>
+              <a href={profile.resume} target="_blank" rel="noopener" className="btn btn-ghost">
                 Résumé (PDF) <FiArrowUpRight aria-hidden="true" />
-              </MagneticLink>
+              </a>
               <a
                 href={socials.instagram}
                 target="_blank"

@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { useReveal } from "../lib/motion";
 import { pivotPath as pp, earlier } from "../data/experience";
 import SectionHead from "../ui/SectionHead";
-import Counter from "../ui/Counter";
 import WorkflowDiagram from "../ui/WorkflowDiagram";
 
 const Experience = () => {
@@ -14,7 +13,6 @@ const Experience = () => {
       <div className="shell">
         <SectionHead
           id="exp-title"
-          index="02"
           label="Experience"
           title={
             <>
@@ -23,136 +21,114 @@ const Experience = () => {
           }
         />
 
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
-          {/* Company rail */}
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+          {/* Company rail — a row on tablet, a sticky column on desktop */}
           <aside className="lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
+            <div className="grid gap-6 sm:grid-cols-2 lg:sticky lg:top-28 lg:block">
               <div data-reveal>
-                <p className="text-4xl font-medium tracking-[-0.03em]">{pp.company}</p>
+                <p className="text-3xl font-medium tracking-[-0.03em]">{pp.company}</p>
                 <p className="mt-1 text-muted">{pp.formerly}</p>
+                <p className="mt-3 text-sm text-dim">
+                  {pp.period} · {pp.location}
+                </p>
               </div>
 
-              <ol data-reveal className="mt-8 space-y-0 border-l border-line pl-6" aria-label="Role history">
-                <li className="relative pb-6">
-                  <span className="absolute -left-[1.85rem] top-1.5 size-2.5 rounded-full border border-line-strong bg-ink" />
-                  <p className="font-mono text-xs text-dim">Jan 2026</p>
-                  <p className="mt-1">{pp.previousRole}</p>
+              <ol data-reveal className="border-l border-line pl-5 lg:mt-8" aria-label="Role history">
+                <li className="relative pb-5">
+                  <span aria-hidden="true" className="absolute -left-[1.55rem] top-1.5 size-2 rounded-full bg-fg/40" />
+                  <p className="text-sm text-dim">Jan 2026</p>
+                  <p>{pp.previousRole}</p>
                 </li>
                 <li className="relative">
-                  <span className="absolute -left-[1.85rem] top-1.5 size-2.5 rounded-full bg-lime ring-4 ring-lime/20" />
-                  <p className="font-mono text-xs text-lime">{pp.promoted} · promoted</p>
-                  <p className="mt-1 font-medium">{pp.role}</p>
+                  <span aria-hidden="true" className="absolute -left-[1.55rem] top-1.5 size-2 rounded-full bg-lime" />
+                  <p className="text-sm text-lime">{pp.promoted} — promoted</p>
+                  <p className="font-medium">{pp.role}</p>
                 </li>
               </ol>
 
-              <p data-reveal className="mt-8 font-mono text-xs text-dim">
-                {pp.period} · {pp.location}
+              <p data-reveal className="stack-line sm:col-span-2 lg:mt-8">
+                {pp.stack.join(" · ")}
               </p>
-
-              <ul data-reveal className="mt-6 flex flex-wrap gap-1.5" aria-label="Stack at Pivot Path">
-                {pp.stack.map((s) => (
-                  <li key={s} className="chip">
-                    {s}
-                  </li>
-                ))}
-              </ul>
             </div>
           </aside>
 
           {/* The story */}
-          <div className="lg:col-span-8">
-            <p data-reveal className="text-[clamp(1.6rem,3.2vw,2.6rem)] font-medium leading-[1.15] tracking-[-0.03em]">
+          <div className="min-w-0 lg:col-span-8">
+            <p data-reveal className="max-w-[34ch] text-[clamp(1.4rem,2.6vw,2.1rem)] font-medium leading-[1.2] tracking-[-0.025em]">
               {pp.headline}
             </p>
 
-            <dl className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-3">
+            <dl className="mt-10 grid gap-6 border-t border-line pt-6 sm:grid-cols-3 sm:gap-8">
               {pp.stats.map((s) => (
-                <div key={s.label} data-reveal className="flex flex-col-reverse justify-end bg-ink p-6 md:p-8">
-                  <dt className="mt-3 text-sm leading-snug text-muted">{s.label}</dt>
-                  <dd className="text-5xl font-medium tracking-[-0.04em] md:text-6xl">
-                    <Counter value={s.value} suffix={s.suffix} />
+                <div key={s.label} data-reveal className="flex flex-col-reverse justify-end">
+                  <dt className="mt-1 text-sm leading-snug text-muted">{s.label}</dt>
+                  <dd className="text-4xl font-medium tracking-[-0.03em] md:text-5xl">
+                    {s.value.toLocaleString("en-US")}
+                    {s.suffix}
                   </dd>
                 </div>
               ))}
             </dl>
 
-            <div data-reveal className="mt-12">
+            <div data-reveal className="mt-14">
               <WorkflowDiagram />
             </div>
 
-            <div data-reveal className="mt-6">
-              <p className="eyebrow mb-3">The engine handles</p>
-              <ul className="flex flex-wrap gap-1.5">
-                {pp.engine.map((e) => (
-                  <li key={e} className="chip !text-fg/80">
-                    {e}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <p data-reveal className="mt-6 max-w-[40rem] leading-relaxed text-muted">
+              <span className="text-fg">The engine handles</span> {pp.engine.slice(0, -1).join(", ")} and {pp.engine.at(-1)}.
+            </p>
 
-            <div className="mt-16">
-              <h3 data-reveal className="eyebrow">
-                Modules I designed &amp; shipped
-              </h3>
-              <ol className="mt-5 grid sm:grid-cols-2 sm:gap-x-10">
-                {pp.modules.map((m, i) => (
-                  <li key={m.name} data-reveal className="group flex items-baseline gap-4 border-t border-line py-4">
-                    <span className="font-mono text-xs text-dim transition-colors group-hover:text-lime">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span>
-                      <span className="block text-lg font-medium tracking-tight">{m.name}</span>
-                      <span className="block text-sm text-muted">{m.note}</span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+            <h3 data-reveal className="mt-14 text-lg font-medium">
+              Modules I designed and shipped
+            </h3>
+            <ul className="mt-4 grid sm:grid-cols-2 sm:gap-x-10">
+              {pp.modules.map((m) => (
+                <li key={m.name} data-reveal className="border-t border-line py-3.5">
+                  <span className="block font-medium">{m.name}</span>
+                  <span className="block text-sm text-muted">{m.note}</span>
+                </li>
+              ))}
+            </ul>
 
-            <div className="mt-16">
-              <h3 data-reveal className="eyebrow">
-                How it’s built
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {pp.how.map((h) => (
-                  <li key={h} data-reveal className="flex gap-3 text-lg leading-relaxed text-fg/85">
-                    <span className="mt-[0.7em] size-1.5 shrink-0 rounded-full bg-lime" aria-hidden="true" />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <h3 data-reveal className="mt-14 text-lg font-medium">
+              How it’s built
+            </h3>
+            <ul className="mt-4 max-w-[42rem] space-y-2.5">
+              {pp.how.map((h) => (
+                <li key={h} data-reveal className="flex gap-3 leading-relaxed text-fg/85">
+                  <span aria-hidden="true" className="text-dim">
+                    –
+                  </span>
+                  {h}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
         {/* Earlier role */}
-        <article data-reveal aria-labelledby="earlier-title" className="mt-24 grid gap-8 rounded-3xl border border-line p-6 md:mt-32 md:p-10 lg:grid-cols-12">
+        <article data-reveal aria-labelledby="earlier-title" className="mt-20 grid gap-6 border-t border-line pt-8 md:mt-28 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-4">
             <p className="eyebrow">Before that</p>
-            <h3 id="earlier-title" className="mt-4 text-2xl font-medium tracking-tight">
+            <h3 id="earlier-title" className="mt-3 text-xl font-medium tracking-tight">
               {earlier.role}
             </h3>
-            <p className="mt-1 text-muted">{earlier.company}</p>
-            <p className="mt-4 font-mono text-xs text-dim">{earlier.period}</p>
+            <p className="text-muted">{earlier.company}</p>
+            <p className="mt-2 text-sm text-dim">{earlier.period}</p>
           </div>
-          <div className="lg:col-span-8">
-            <p className="text-xl leading-snug tracking-tight">{earlier.summary}</p>
-            <ul className="mt-6 space-y-2 text-muted">
+          <div className="min-w-0 lg:col-span-8">
+            <p className="max-w-[40rem] text-lg leading-relaxed">{earlier.summary}</p>
+            <ul className="mt-4 max-w-[40rem] space-y-1.5 text-muted">
               {earlier.points.map((p) => (
                 <li key={p} className="flex gap-3">
-                  <span aria-hidden="true">→</span>
+                  <span aria-hidden="true" className="text-dim">
+                    –
+                  </span>
                   {p}
                 </li>
               ))}
             </ul>
-            <ul className="mt-6 flex flex-wrap gap-1.5" aria-label="Stack">
-              {earlier.stack.map((s) => (
-                <li key={s} className="chip">
-                  {s}
-                </li>
-              ))}
-            </ul>
+            <p className="stack-line mt-5">{earlier.stack.join(" · ")}</p>
           </div>
         </article>
       </div>

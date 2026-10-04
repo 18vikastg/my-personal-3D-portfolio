@@ -1,6 +1,5 @@
 import Nav from "./ui/Nav";
 import Hero from "./sections/Hero";
-import Ticker from "./sections/Ticker";
 import Work from "./sections/Work";
 import Experience from "./sections/Experience";
 import Principles from "./sections/Principles";
@@ -13,7 +12,7 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 
 const App = () => (
-  <div className="grain">
+  <>
     <a
       href="#work"
       className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-full focus:bg-lime focus:px-4 focus:py-2 focus:text-ink"
@@ -23,7 +22,6 @@ const App = () => (
     <Nav />
     <main>
       <Hero />
-      <Ticker />
       <Work />
       <Experience />
       <Principles />
@@ -35,7 +33,7 @@ const App = () => (
       <Contact />
     </main>
     <Footer />
-  </div>
+  </>
 );
 
 export default App;
