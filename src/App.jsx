@@ -1,4 +1,5 @@
 import Nav from "./ui/Nav";
+import World from "./world/World";
 import Hero from "./sections/Hero";
 import Work from "./sections/Work";
 import Experience from "./sections/Experience";
@@ -19,6 +20,7 @@ const App = () => (
     >
       Skip to work
     </a>
+    <World />
     <Nav />
     <main>
       <Hero />

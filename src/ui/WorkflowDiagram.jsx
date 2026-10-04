@@ -47,7 +47,7 @@ const steps = [
 ];
 
 const WorkflowDiagram = () => (
-  <figure className="border-y border-line py-8">
+  <figure className="wf-plate border-y border-line py-8">
     <svg viewBox="0 0 820 250" className="hidden w-full md:block" role="img" aria-labelledby="wf-desc">
       <desc id="wf-desc">
         A draft is submitted, passes a precondition, splits into parallel QA and production reviews, joins at approval

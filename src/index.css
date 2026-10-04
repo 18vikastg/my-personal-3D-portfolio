@@ -147,6 +147,35 @@ section[id] {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   3D world mode — only when the world has actually loaded (html.world-on).
+   Content always sits above the canvas; a scrim keeps text legible.
+--------------------------------------------------------------------------- */
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+.world-scrim {
+  background: linear-gradient(90deg, rgb(10 10 10 / 0.86) 0%, rgb(10 10 10 / 0.6) 42%, rgb(10 10 10 / 0.1) 72%, transparent 100%);
+}
+@media (max-width: 899px) {
+  .world-scrim {
+    background: rgb(10 10 10 / 0.62);
+  }
+}
+.world-on #silent-stories {
+  background: transparent;
+}
+.world-on #silent-stories .ss-fade {
+  visibility: hidden;
+}
+/* Labelled 2D diagrams sit on a solid plate in front of the 3D model */
+.world-on .wf-plate {
+  background: var(--color-ink);
+  padding-inline: 1.25rem;
+}
+
 /* Elements that GSAP reveals start hidden only when JS + motion are on */
 .js-motion [data-reveal] {
   opacity: 0;

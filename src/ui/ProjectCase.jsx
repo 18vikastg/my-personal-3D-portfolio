@@ -59,7 +59,7 @@ const Fact = ({ label, children }) => (
 
 /** A project with a real screenshot: image first, then the story. */
 export const ProjectCase = ({ project, flip }) => (
-  <article aria-labelledby={`${project.slug}-title`} className="grid gap-8 lg:grid-cols-12 lg:gap-14">
+  <article data-project={project.slug} aria-labelledby={`${project.slug}-title`} className="grid gap-8 lg:grid-cols-12 lg:gap-14">
     <figure data-reveal className={`min-w-0 self-start lg:sticky lg:top-24 lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
       <img
         src={project.visual.src}
@@ -107,7 +107,7 @@ export const ProjectCase = ({ project, flip }) => (
 
 /** A project without screenshots, told in text only. */
 export const ProjectBrief = ({ project }) => (
-  <article aria-labelledby={`${project.slug}-title`} data-reveal className="min-w-0 border-t border-line pt-6">
+  <article data-project={project.slug} aria-labelledby={`${project.slug}-title`} data-reveal className="min-w-0 border-t border-line pt-6">
     <p className="eyebrow">{project.kind}</p>
     <h3 id={`${project.slug}-title`} className="mt-3 text-2xl font-medium tracking-[-0.025em] md:text-3xl">
       {project.title}

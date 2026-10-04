@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { FiArrowUpRight, FiInstagram, FiPlay } from "react-icons/fi";
 import { gsap, useGSAP, useReveal, prefersReducedMotion } from "../lib/motion";
 import { sides, silentStories as ss } from "../data/site";
+import Noren from "../ui/Noren";
 
 const { film } = ss;
 const filmName = film.title.join("");
@@ -36,7 +37,7 @@ const SilentStories = () => {
   return (
     <section id="silent-stories" ref={scope} aria-labelledby="ss-chapter" className="grain relative bg-black text-ss-cream">
       {/* Ink → black: the mood shift */}
-      <div aria-hidden="true" className="h-24 bg-gradient-to-b from-ink to-black md:h-36" />
+      <div aria-hidden="true" className="ss-fade h-24 bg-gradient-to-b from-ink to-black md:h-36" />
 
       <div className="shell">
         {/* Outside the IDE */}
@@ -66,6 +67,8 @@ const SilentStories = () => {
             );
           })}
         </ul>
+
+        <Noren />
 
         {/* Silent Stories — the identity */}
         <div className="mt-24 grid items-center gap-10 md:mt-32 md:grid-cols-12">
@@ -198,7 +201,7 @@ const SilentStories = () => {
       </div>
 
       {/* ...and back to ink */}
-      <div aria-hidden="true" className="mt-24 h-24 bg-gradient-to-b from-black to-ink md:mt-32 md:h-32" />
+      <div aria-hidden="true" className="ss-fade mt-24 h-24 bg-gradient-to-b from-black to-ink md:mt-32 md:h-32" />
     </section>
   );
 };
