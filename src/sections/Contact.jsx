@@ -1,288 +1,181 @@
-import { useRef, useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
-import TitleHeader from "../components/TitleHeader";
-import ContactExperience from "../components/ContactExperience";
+import { useRef, useState } from "react";
+import { FiArrowUpRight, FiCheck, FiCopy, FiGithub, FiInstagram, FiLinkedin } from "react-icons/fi";
+import { useReveal } from "../lib/motion";
+import { profile, socials } from "../data/site";
+import MagneticLink from "../ui/MagneticLink";
 
-const LS_KEY = "portfolio_contact_info";
+const env = import.meta.env;
+const emailjsReady = Boolean(
+  env.VITE_APP_EMAILJS_SERVICE_ID && env.VITE_APP_EMAILJS_TEMPLATE_ID && env.VITE_APP_EMAILJS_PUBLIC_KEY
+);
 
-// Silently collect visitor metadata to include in every email
-const collectVisitorMeta = async () => {
-  const ua = navigator.userAgent;
-  const browserName = (() => {
-    if (ua.includes("Edg/")) return "Edge";
-    if (ua.includes("OPR/") || ua.includes("Opera")) return "Opera";
-    if (ua.includes("Chrome")) return "Chrome";
-    if (ua.includes("Firefox")) return "Firefox";
-    if (ua.includes("Safari")) return "Safari";
-    return "Unknown";
-  })();
-  const osName = (() => {
-    if (ua.includes("Windows NT 10")) return "Windows 10/11";
-    if (ua.includes("Windows")) return "Windows";
-    if (ua.includes("Mac OS X")) return "macOS";
-    if (ua.includes("Android")) return "Android";
-    if (ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
-    if (ua.includes("Linux")) return "Linux";
-    return "Unknown OS";
-  })();
+const field =
+  "w-full rounded-2xl border border-line-strong bg-transparent px-4 py-3.5 text-fg placeholder:text-dim transition-colors focus:border-lime focus:outline-none";
 
-  const meta = {
-    visitor_browser: `${browserName} (${ua.substring(0, 120)})`,
-    visitor_os: osName,
-    visitor_screen: `${window.screen.width}×${window.screen.height} (DPR ${window.devicePixelRatio})`,
-    visitor_language: navigator.language || "unknown",
-    visitor_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    visitor_referrer: document.referrer || "Direct / No referrer",
-    visitor_page: window.location.href,
-    visitor_time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) + " IST",
-    visitor_ip: "Fetching…",
-    visitor_city: "—",
-    visitor_country: "—",
-    visitor_isp: "—",
-  };
+/**
+ * Sends through EmailJS when it's configured; otherwise opens the visitor's
+ * mail client with the message pre-filled. Nothing beyond what the visitor
+ * types is collected.
+ */
+const ContactForm = () => {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
 
-  try {
-    const res = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(4000) });
-    if (res.ok) {
-      const geo = await res.json();
-      meta.visitor_ip = geo.ip ?? "Unavailable";
-      meta.visitor_city = `${geo.city ?? "—"}, ${geo.region ?? "—"}`;
-      meta.visitor_country = geo.country_name ?? "—";
-      meta.visitor_isp = geo.org ?? "—";
-    }
-  } catch {
-    meta.visitor_ip = "Could not fetch";
-  }
+  const update = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  return meta;
-};
-
-// Check if the Contact Picker API is available (Android Chrome / Samsung Browser)
-const canUsePicker = () =>
-  "contacts" in navigator && "ContactsManager" in window;
-
-const Contact = () => {
-  const formRef = useRef(null);
-  const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
-  const [isReturning, setIsReturning] = useState(false);
-
-  // Pre-fill from localStorage if the visitor has messaged before
-  useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-      if (saved?.name || saved?.email) {
-        setForm((f) => ({ ...f, ...saved, message: "" }));
-        setIsReturning(true);
-      }
-    } catch {
-      // ignore parse errors
-    }
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-  };
-
-  // Contact Picker API — lets visitor share their contact card from their phone
-  const handlePickContact = async () => {
-    try {
-      const contacts = await navigator.contacts.select(
-        ["name", "email", "tel"],
-        { multiple: false }
-      );
-      if (contacts.length > 0) {
-        const c = contacts[0];
-        setForm((f) => ({
-          ...f,
-          name: c.name?.[0] ?? f.name,
-          email: c.email?.[0] ?? f.email,
-          phone: c.tel?.[0] ?? f.phone,
-        }));
-      }
-    } catch {
-      // user cancelled or permission denied — do nothing
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
+    if (!emailjsReady) {
+      const subject = encodeURIComponent(`Hello from ${form.name || "your website"}`);
+      const body = encodeURIComponent(`${form.message}\n\n— ${form.name}${form.email ? ` (${form.email})` : ""}`);
+      window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+      return;
+    }
+    setStatus("sending");
     try {
-      const meta = await collectVisitorMeta();
-
-      const templateParams = {
-        from_name: form.name.trim() || "Anonymous Visitor",
-        from_email: form.email.trim() || "Not provided",
-        from_phone: form.phone.trim() || "Not provided",
-        message: form.message,
-        ...meta,
-      };
-
-      const result = await emailjs.send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
+      const { default: emailjs } = await import("@emailjs/browser");
+      await emailjs.send(
+        env.VITE_APP_EMAILJS_SERVICE_ID,
+        env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        { from_name: form.name.trim(), from_email: form.email.trim(), message: form.message.trim() },
+        { publicKey: env.VITE_APP_EMAILJS_PUBLIC_KEY }
       );
-
-      if (result.status === 200) {
-        // Save name/email/phone for next visit
-        try {
-          localStorage.setItem(
-            LS_KEY,
-            JSON.stringify({ name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim() })
-          );
-        } catch { /* quota exceeded — ignore */ }
-
-        setForm((f) => ({ ...f, message: "" }));
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 4000);
-      }
-    } catch (err) {
-      console.error("EmailJS Error:", err);
-      setError("Failed to send message. Please try again later.");
-    } finally {
-      setLoading(false);
+      setForm({ name: "", email: "", message: "" });
+      setStatus("sent");
+    } catch {
+      setStatus("error");
     }
   };
 
   return (
-    <section id="contact" className="flex-center section-padding">
-      <div className="w-full h-full md:px-10 px-5">
-        <TitleHeader
-          title="Let's Build Something Together"
-          sub="💬 Open to internships, collaborations, and full-time roles — drop me a message!"
+    <form onSubmit={submit} className="space-y-4" aria-describedby="form-status">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className="eyebrow mb-2 block">Name</span>
+          <input name="name" value={form.name} onChange={update} required autoComplete="name" className={field} placeholder="Ada Lovelace" />
+        </label>
+        <label className="block">
+          <span className="eyebrow mb-2 block">Email</span>
+          <input
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={update}
+            required
+            autoComplete="email"
+            className={field}
+            placeholder="ada@company.com"
+          />
+        </label>
+      </div>
+      <label className="block">
+        <span className="eyebrow mb-2 block">Message</span>
+        <textarea
+          name="message"
+          value={form.message}
+          onChange={update}
+          required
+          rows={5}
+          className={`${field} resize-y`}
+          placeholder="What are you building?"
         />
-        <div className="grid-12-cols mt-16">
-          <div className="xl:col-span-5">
-            <div className="flex-center card-border rounded-xl p-10">
-              <form
-                ref={formRef}
-                onSubmit={handleSubmit}
-                className="w-full flex flex-col gap-7"
-              >
-                {/* Returning visitor banner */}
-                {isReturning && (
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm">
-                    <span>👋</span>
-                    <span>Welcome back! Your details were pre-filled.</span>
-                  </div>
-                )}
+      </label>
+      <div className="flex flex-wrap items-center gap-4">
+        <button type="submit" disabled={status === "sending"} className="btn btn-primary !px-6 !py-3.5 disabled:opacity-60">
+          {status === "sending" ? "Sending…" : "Send message"} <FiArrowUpRight aria-hidden="true" />
+        </button>
+        <p id="form-status" role="status" className="text-sm">
+          {status === "sent" && <span className="text-lime">Got it — I’ll reply soon.</span>}
+          {status === "error" && (
+            <span className="text-[#ff8a7a]">
+              That didn’t send. Email me directly at {profile.email}.
+            </span>
+          )}
+        </p>
+      </div>
+    </form>
+  );
+};
 
-                {/* Contact Picker button — only shown on supported devices */}
-                {canUsePicker() && (
-                  <button
-                    type="button"
-                    onClick={handlePickContact}
-                    className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all duration-200 text-sm font-medium"
-                  >
-                    📱 Fill from my contacts
-                  </button>
-                )}
+const Contact = () => {
+  const scope = useRef(null);
+  const [copied, setCopied] = useState(false);
+  useReveal(scope);
 
-                <div>
-                  <label htmlFor="name">
-                    Your name <span className="text-white/30 text-xs">(optional)</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="What's your name?"
-                    disabled={loading}
-                    className="w-full p-3 bg-transparent border border-gray-600 rounded-lg"
-                  />
-                </div>
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
 
-                <div>
-                  <label htmlFor="email">
-                    Email <span className="text-white/30 text-xs">(optional)</span>
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="Your email (so I can reply)"
-                    disabled={loading}
-                    className="w-full p-3 bg-transparent border border-gray-600 rounded-lg"
-                  />
-                </div>
+  return (
+    <section id="contact" ref={scope} aria-labelledby="contact-title" className="section border-t border-line">
+      <div className="shell">
+        <p data-reveal="fade" className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+          <span>09</span>
+          <span className="h-px w-10 bg-line" aria-hidden="true" />
+          <span>Let’s build</span>
+        </p>
+        <h2 id="contact-title" data-reveal className="display mt-6 text-[clamp(3rem,10vw,9rem)]">
+          Building something
+          <br />
+          <span className="serif-accent text-lime">interesting?</span>
+        </h2>
+        <p data-reveal className="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl">
+          I’m open to software engineering roles — in Bengaluru or abroad — and always up for talking about products,
+          workflow systems or a weird idea you can’t stop thinking about.
+        </p>
 
-                <div>
-                  <label htmlFor="phone">
-                    Phone <span className="text-white/30 text-xs">(optional)</span>
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="Your phone number"
-                    disabled={loading}
-                    className="w-full p-3 bg-transparent border border-gray-600 rounded-lg"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message">Your Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                    placeholder="What would you like to say?"
-                    rows="5"
-                    required
-                    disabled={loading}
-                    className="w-full p-3 bg-transparent border border-gray-600 rounded-lg"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="cta-wrapper"
+        <div className="mt-14 grid gap-14 lg:grid-cols-12">
+          <div className="space-y-8 lg:col-span-5">
+            <div data-reveal>
+              <p className="eyebrow">Email — fastest</p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="link-underline break-all text-2xl font-medium tracking-tight md:text-3xl"
                 >
-                  <div className="cta-button group">
-                    <div className="bg-circle" />
-                    <p className="text">
-                      {loading ? "Sending…" : "Send Message"}
-                    </p>
-                    <div className="arrow-wrapper">
-                      <img src="/images/arrow-down.svg" alt="arrow" />
-                    </div>
-                  </div>
+                  {profile.email}
+                </a>
+                <button
+                  type="button"
+                  onClick={copy}
+                  className="grid size-11 place-items-center rounded-full border border-line-strong text-muted transition-colors hover:border-fg hover:text-fg"
+                  aria-label={copied ? "Email address copied" : "Copy email address"}
+                >
+                  {copied ? <FiCheck className="text-lime" aria-hidden="true" /> : <FiCopy aria-hidden="true" />}
                 </button>
+              </div>
+            </div>
 
-                {success && (
-                  <p className="text-green-400 text-center mt-2 font-medium">
-                    ✓ Message sent! I'll get back to you soon.
-                  </p>
-                )}
-                {error && (
-                  <p className="text-red-400 text-center mt-2">
-                    {error}
-                  </p>
-                )}
-              </form>
+            <div data-reveal className="flex flex-wrap gap-3">
+              <MagneticLink href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+                <FiLinkedin aria-hidden="true" /> LinkedIn
+              </MagneticLink>
+              <MagneticLink href={socials.github} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+                <FiGithub aria-hidden="true" /> GitHub
+              </MagneticLink>
+              <MagneticLink href={profile.resume} target="_blank" rel="noopener" className="btn btn-ghost">
+                Résumé (PDF) <FiArrowUpRight aria-hidden="true" />
+              </MagneticLink>
+              <a
+                href={socials.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram (personal)"
+                className="grid size-11 place-items-center self-center rounded-full text-muted transition-colors hover:bg-fg/10 hover:text-fg"
+              >
+                <FiInstagram aria-hidden="true" />
+              </a>
             </div>
           </div>
-          <div className="xl:col-span-7 min-h-96">
-            <div className="bg-[#cd7c2e] w-full h-full hover:cursor-grab rounded-3xl overflow-hidden">
-              <ContactExperience />
-            </div>
+
+          <div data-reveal className="lg:col-span-7">
+            <ContactForm />
           </div>
         </div>
       </div>

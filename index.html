@@ -1,14 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vikas TG's Portfolio</title>  <!-- Change this line -->
-    <meta name="description" content="Portfolio of Vikas TG, Full Stack Developer" />
-    <link rel="icon" href="/favicon.ico" />
+    <title>Vikas T G — Software Engineer who builds things people use</title>
+    <meta
+      name="description"
+      content="Vikas T G is a software engineer in Bengaluru. He built a workflow automation product used by 3,000+ people in pharma manufacturing, plus AI tools, storefronts, open-source projects — and short films as Silent Stories."
+    />
+    <meta name="author" content="Vikas T G" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="canonical" href="https://vikastg.vercel.app/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vikastg.vercel.app/" />
+    <meta property="og:site_name" content="Vikas T G" />
+    <meta property="og:title" content="Vikas T G — Software Engineer who builds things people use" />
+    <meta
+      property="og:description"
+      content="Workflow engines in production, AI tools, a real storefront and a Best Paper Award. Software engineer in Bengaluru, open to relocation."
+    />
+    <meta property="og:image" content="https://vikastg.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Vikas T G — I build software people actually use." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vikas T G — Software Engineer who builds things people use" />
+    <meta name="twitter:description" content="Workflow engines in production, AI tools, a real storefront and a Best Paper Award." />
+    <meta name="twitter:image" content="https://vikastg.vercel.app/og.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Oswald:wght@200;300&display=swap"
+    />
+    <link rel="preload" as="image" href="/work/vikas.webp" type="image/webp" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Vikas T G",
+        "jobTitle": "Software Engineer",
+        "worksFor": { "@type": "Organization", "name": "Pivot Path" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "JSS Academy of Technical Education, Bengaluru" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN" },
+        "email": "mailto:vikastg2000@gmail.com",
+        "url": "https://vikastg.vercel.app/",
+        "image": "https://vikastg.vercel.app/work/vikas.webp",
+        "award": "Best Paper Award, IC-SIIT SYNERGY 2026",
+        "sameAs": ["https://github.com/18vikastg", "https://www.linkedin.com/in/vikas-t-g-09692325a/", "https://x.com/vikastg263399", "https://www.instagram.com/vikas__t__g/"],
+        "knowsAbout": ["TypeScript", "React", "Node.js", "PostgreSQL", "Workflow automation", "Docker", "Python", "LLM APIs"]
+      }
+    </script>
+
+    <!-- Reveal animations hide content only when JS runs and motion is allowed -->
+    <script>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-motion");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; font-family: system-ui">
+        Vikas T G — Software Engineer, Bengaluru. Email: vikastg2000@gmail.com · github.com/18vikastg
+      </p>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

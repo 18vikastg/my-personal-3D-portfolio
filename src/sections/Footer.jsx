@@ -1,68 +1,42 @@
-import { FaLinkedin, FaGithub, FaInstagram, FaTwitter, FaEnvelope } from "react-icons/fa";
+import { FiArrowUp } from "react-icons/fi";
+import { profile, socials, silentStories } from "../data/site";
 
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/vikas-t-g-09692325a/",
-    icon: <FaLinkedin size={24} />,
-  },
-  {
-    name: "GitHub",
-    url: "https://github.com/18vikastg",
-    icon: <FaGithub size={24} />,
-  },
-  {
-    name: "HEALTHBOTS Org",
-    url: "https://github.com/HEALTHBOTS",
-    icon: <FaGithub size={24} />,
-  },
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/vikas__t__g/",
-    icon: <FaInstagram size={24} />,
-  },
-  {
-    name: "X (Twitter)",
-    url: "https://x.com/vikastg263399",
-    icon: <FaTwitter size={24} />,
-  },
-  {
-    name: "Email",
-    url: "mailto:vikastg2000@gmail.com",
-    icon: <FaEnvelope size={24} />,
-  },
+const links = [
+  { label: "GitHub", href: socials.github },
+  { label: "LinkedIn", href: socials.linkedin },
+  { label: "X", href: socials.x },
+  { label: "Instagram", href: socials.instagram },
+  { label: "Silent Stories", href: silentStories.url },
 ];
 
-const Footer = () => {
-  return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="flex flex-col justify-center">
-          <p className="text-white/40 text-sm">vikastg.vercel.app</p>
-        </div>
-        <div className="socials">
-          {socialLinks.map((social, index) => (
-            <a
-              key={index}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="icon"
-              aria-label={social.name}
-              title={social.name}
-            >
-              {social.icon}
-            </a>
-          ))}
-        </div>
-        <div className="flex flex-col justify-center">
-          <p className="text-center md:text-end">
-            © {new Date().getFullYear()} Vikas T G. All rights reserved.
-          </p>
-        </div>
+const Footer = () => (
+  <footer className="border-t border-line">
+    <div className="shell flex flex-col gap-8 py-10 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p className="text-lg font-medium tracking-tight">{profile.name}</p>
+        <p className="mt-1 max-w-sm text-sm text-muted">
+          Designed and built by me with React, GSAP, Tailwind and an unreasonable amount of filter coffee.
+        </p>
       </div>
-    </footer>
-  );
-};
+      <nav aria-label="Social">
+        <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          {links.map((l) => (
+            <li key={l.label}>
+              <a href={l.href} target="_blank" rel="noopener noreferrer" className="link-underline text-muted hover:text-fg">
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="flex items-center justify-between gap-6 md:flex-col md:items-end">
+        <a href="#top" className="inline-flex items-center gap-2 text-sm text-muted hover:text-fg">
+          Back to top <FiArrowUp aria-hidden="true" />
+        </a>
+        <p className="font-mono text-xs text-dim">© {new Date().getFullYear()} · Bengaluru</p>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;
