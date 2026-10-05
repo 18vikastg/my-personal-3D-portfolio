@@ -47,7 +47,7 @@ const steps = [
 ];
 
 const WorkflowDiagram = () => (
-  <figure className="wf-plate border-y border-line py-8">
+  <figure className="border-y border-line py-8">
     <svg viewBox="0 0 820 250" className="hidden w-full md:block" role="img" aria-labelledby="wf-desc">
       <desc id="wf-desc">
         A draft is submitted, passes a precondition, splits into parallel QA and production reviews, joins at approval
@@ -87,6 +87,10 @@ const WorkflowDiagram = () => (
       ))}
     </ol>
 
+    <p className="sr-only">
+      The example flow: Draft, then Submitted once a precondition passes, then QA review and Prod review in parallel
+      (either can be delegated), then Approved within an SLA that escalates if late, then Released.
+    </p>
     <figcaption className="mt-6 text-sm leading-relaxed text-muted">
       How the engine thinks, roughly. Every arrow above is a transition with rules attached, and every transition is
       written to the audit trail: who, what, when. <span className="text-dim">(Illustrative — not a real process.)</span>

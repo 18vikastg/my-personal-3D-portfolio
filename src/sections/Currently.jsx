@@ -7,7 +7,7 @@ const Currently = () => {
   useReveal(scope);
 
   return (
-    <section ref={scope} aria-labelledby="currently-title" className="py-16 md:py-24">
+    <section id="currently" ref={scope} aria-labelledby="currently-title" className="py-16 md:py-24">
       <div className="shell grid gap-8 md:grid-cols-12">
         <div className="md:col-span-4">
           <p data-reveal className="eyebrow">

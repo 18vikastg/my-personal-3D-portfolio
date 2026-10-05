@@ -42,7 +42,7 @@ const Proof = () => {
         />
 
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
-          <article data-reveal aria-labelledby="award-title" className="wf-plate rounded-md border border-line p-6 md:p-10 lg:col-span-7">
+          <article data-reveal aria-labelledby="award-title" className="rounded-md border border-line p-6 md:p-10 lg:col-span-7">
             <p className="inline-flex items-center gap-2 text-sm text-lime">
               <FiAward aria-hidden="true" /> Best Paper Award · IC-SIIT SYNERGY 2026
             </p>

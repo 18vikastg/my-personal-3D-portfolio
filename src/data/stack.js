@@ -38,3 +38,18 @@ export const shippedWith = [
 export const alsoInTheKit = ["Java", "Vue", "Svelte / SvelteKit", "Django", "Jest", "Postman"];
 
 export const groups = ["Language", "Frontend", "Backend", "Data", "Ship", "AI"];
+
+// Places where tools were used; each "used in" entry above maps to one place
+// by keyword (the last one catches side projects).
+export const places = [
+  ["Pivot Path", /pivot path/i],
+  ["Arcolab", /arcolab/i],
+  ["Swanand Spices", /swanand/i],
+  ["PrepLink", /preplink/i],
+  ["Smart Health Queue", /health queue/i],
+  ["AI Mock Interview", /mock interview/i],
+  ["OneBox", /onebox/i],
+  ["Research", /research|churn/i],
+  ["Lab & side projects", /.*/],
+];
+export const placeOf = (label) => places.findIndex(([, re]) => re.test(label));

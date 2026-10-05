@@ -58,6 +58,20 @@ export const silentStories = {
   },
 };
 
+// Every chapter of the walk, in order — used by the chapter rail and the mobile menu
+export const chapters = [
+  { id: "top", label: "Intro" },
+  { id: "work", label: "Work" },
+  { id: "experience", label: "Experience" },
+  { id: "thinking", label: "How I think" },
+  { id: "lab", label: "Lab" },
+  { id: "toolbox", label: "Toolbox" },
+  { id: "proof", label: "Proof" },
+  { id: "silent-stories", label: "Silent Stories" },
+  { id: "currently", label: "Currently" },
+  { id: "contact", label: "Contact" },
+];
+
 export const nav = [
   { label: "Work", href: "#work" },
   { label: "Experience", href: "#experience" },

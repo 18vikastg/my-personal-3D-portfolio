@@ -16,7 +16,7 @@ const field =
  * mail client with the message pre-filled. Nothing beyond what the visitor
  * types is collected.
  */
-const ContactForm = () => {
+export const ContactForm = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
 
