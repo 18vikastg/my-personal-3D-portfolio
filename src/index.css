@@ -145,101 +145,48 @@ section[id] {
   .link-underline:focus-visible {
     background-size: 100% 1px;
   }
+  /* A bigger, invisible hit area for small text links — the look is unchanged */
+  .tap-area {
+    position: relative;
+  }
+  .tap-area::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 26px);
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* ---------------------------------------------------------------------------
-   The Studio: HTML placed in 3D space. The stage carries the camera matrix;
-   every [data-anchor] block is positioned by the engine with matrix3d.
-   Sizes here are in CSS pixels; the world scales them.
+   3D world mode — only when the world has actually loaded (html.world-on).
+   Content always sits above the canvas; a scrim keeps text legible.
 --------------------------------------------------------------------------- */
-.studio-view {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
+main,
+footer {
+  position: relative;
   z-index: 1;
 }
-.studio-stage {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform-style: preserve-3d;
+.world-scrim {
+  background: linear-gradient(90deg, rgb(10 10 10 / 0.86) 0%, rgb(10 10 10 / 0.6) 42%, rgb(10 10 10 / 0.1) 72%, transparent 100%);
 }
-/* Semantic wrappers (main, sections) stay in the accessibility tree but
-   don't create boxes, so the 3D context reaches every anchored block. */
-.studio-stage .contents {
-  display: contents;
+@media (max-width: 899px) {
+  .world-scrim {
+    background: rgb(10 10 10 / 0.62);
+  }
 }
-.anchor {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  pointer-events: none;
-  backface-visibility: hidden;
-  color: var(--color-fg);
+.world-on #silent-stories {
+  background: transparent;
 }
-
-/* Wall lettering: type on the architecture, no panel */
-.sign {
-  text-wrap: balance;
+.world-on #silent-stories .ss-fade {
+  visibility: hidden;
 }
-/* Placards: museum-style labels standing beside the work */
-.placard {
-  background: rgb(12 12 12 / 0.9);
-  border: 1px solid var(--color-line-strong);
-  border-radius: 4px;
-  padding: 24px 26px;
-  font-size: 17px;
-  line-height: 1.55;
-}
-.placard p + p {
-  margin-top: 0.6em;
-}
-.placard .kicker,
-.sign .kicker {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-/* Phones see wall lettering from further away: the small lines grow */
-[data-narrow] .sign .kicker {
-  font-size: 26px;
-}
-[data-narrow] .tag {
-  font-size: 22px;
-  white-space: normal;
-  max-width: 300px;
-}
-[data-narrow] .sign :is(h2, h3) + p {
-  font-size: 34px;
-  line-height: 1.3;
-}
-/* Small labels on objects */
-.tag {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  white-space: nowrap;
-  padding: 5px 9px;
-  border-radius: 3px;
-  background: rgb(10 10 10 / 0.85);
-  border: 1px solid var(--color-line);
-  color: var(--color-fg);
-}
-/* A sheet of paper lying in the world */
-.sheet {
-  background: var(--color-paper);
-  color: var(--color-paper-ink);
-  padding: 40px 38px;
-  box-shadow: 0 1px 0 rgb(0 0 0 / 0.08);
-}
-.studio-link {
-  color: var(--color-lime);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
+/* Labelled 2D diagrams sit on a solid plate in front of the 3D model */
+.world-on .wf-plate {
+  background: var(--color-ink);
+  padding-inline: 1.25rem;
 }
 
 /* Elements that GSAP reveals start hidden only when JS + motion are on */

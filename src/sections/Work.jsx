@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { useReveal } from "../lib/motion";
+import { emit } from "../world/bus";
 import { projects } from "../data/projects";
 import { socials } from "../data/site";
 import SectionHead from "../ui/SectionHead";
@@ -12,6 +13,16 @@ const textOnly = projects.filter((p) => !p.visual);
 const Work = () => {
   const scope = useRef(null);
   useReveal(scope);
+
+  // Tell the 3D world which project is being read
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && emit("project", e.target.dataset.project)),
+      { rootMargin: "-45% 0px -45% 0px" }
+    );
+    scope.current.querySelectorAll("[data-project]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section id="work" ref={scope} aria-labelledby="work-title" className="section">

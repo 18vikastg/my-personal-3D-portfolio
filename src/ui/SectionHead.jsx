@@ -10,7 +10,7 @@ const SectionHead = ({ label, title, intro, tone = "ink", id }) => {
       <p data-reveal className={`eyebrow ${tone === "paper" ? "!text-paper-muted" : ""}`}>
         {label}
       </p>
-      <h2 id={id} data-reveal data-split className="display mt-4 max-w-[20ch] text-[clamp(2rem,4.6vw,3.75rem)]">
+      <h2 id={id} data-reveal className="display mt-4 max-w-[20ch] text-[clamp(2rem,4.6vw,3.75rem)]">
         {title}
       </h2>
       {intro && (

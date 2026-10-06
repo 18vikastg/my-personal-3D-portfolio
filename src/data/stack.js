@@ -11,6 +11,7 @@ export const shippedWith = [
   { name: "Next.js", group: "Frontend", usedIn: ["AI Mock Interview"] },
   { name: "React Native", group: "Frontend", usedIn: ["Smart Health Queue"] },
   { name: "Tailwind CSS", group: "Frontend", usedIn: ["Swanand Spices", "PrepLink", "AI Mock Interview", "This site"] },
+  { name: "Vite", group: "Frontend", usedIn: ["This site", "Swanand Spices"] },
   { name: "Framer Motion", group: "Frontend", usedIn: ["Swanand Spices"] },
   { name: "GSAP", group: "Frontend", usedIn: ["This site", "Zentry-inspired motion site"] },
 
@@ -18,7 +19,8 @@ export const shippedWith = [
   { name: "Express.js", group: "Backend", usedIn: ["PrepLink", "OneBox"] },
   { name: "REST APIs", group: "Backend", usedIn: ["PrepLink", "Arcolab security platform", "Pivot Path"] },
   { name: "Socket.IO", group: "Backend", usedIn: ["Smart Health Queue"] },
-  { name: "Plugin development", group: "Backend", usedIn: ["Pivot Path — plugins on an open-source platform"] },
+  { name: "Plugin development", group: "Backend", usedIn: ["Pivot Path — plugins on NocoBase"] },
+  { name: "NocoBase", group: "Backend", usedIn: ["Pivot Path workflow engine"] },
 
   { name: "PostgreSQL", group: "Data", usedIn: ["Pivot Path schemas", "Smart Health Queue", "AI Mock Interview"] },
   { name: "MongoDB", group: "Data", usedIn: ["PrepLink", "Arcolab security platform"] },
@@ -38,18 +40,3 @@ export const shippedWith = [
 export const alsoInTheKit = ["Java", "Vue", "Svelte / SvelteKit", "Django", "Jest", "Postman"];
 
 export const groups = ["Language", "Frontend", "Backend", "Data", "Ship", "AI"];
-
-// Places where tools were used; each "used in" entry above maps to one place
-// by keyword (the last one catches side projects).
-export const places = [
-  ["Pivot Path", /pivot path/i],
-  ["Arcolab", /arcolab/i],
-  ["Swanand Spices", /swanand/i],
-  ["PrepLink", /preplink/i],
-  ["Smart Health Queue", /health queue/i],
-  ["AI Mock Interview", /mock interview/i],
-  ["OneBox", /onebox/i],
-  ["Research", /research|churn/i],
-  ["Lab & side projects", /.*/],
-];
-export const placeOf = (label) => places.findIndex(([, re]) => re.test(label));

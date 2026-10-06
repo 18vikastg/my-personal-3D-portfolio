@@ -42,7 +42,7 @@ export const pivotPath = {
     { name: "Screen capture", note: "evidence attached to the step" },
   ],
   how: [
-    "Core engine logic in Node.js and TypeScript, built as plugins on an open-source platform.",
+    "Core engine logic in Node.js and TypeScript, built as plugins on NocoBase, an open-source low-code platform.",
     "PostgreSQL schemas and data models for configurable, multi-step workflows.",
     "React + TypeScript dashboards; production deployments with Docker on Linux and Git-based CI/CD.",
     "Agile/Scrum with a team that now maintains and extends what I started.",

@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReveal } from "../lib/motion";
 import { shippedWith, alsoInTheKit, groups } from "../data/stack";
 import SectionHead from "../ui/SectionHead";
+import { emit } from "../world/bus";
 
 const byGroup = (g) => shippedWith.filter((t) => t.group === g);
 
@@ -16,6 +17,9 @@ const Toolbox = () => {
   useReveal(scope);
 
   const current = shippedWith.find((t) => t.name === active);
+
+  // The 3D world draws the same receipts
+  useEffect(() => emit("tool", active), [active]);
 
   return (
     <section id="toolbox" ref={scope} aria-labelledby="toolbox-title" className="section border-t border-line">
@@ -62,7 +66,7 @@ const Toolbox = () => {
           </div>
 
           <div className="lg:col-span-5">
-            <div aria-live="polite" className="sticky top-28 border-l border-line py-4 pl-8">
+            <div aria-live="polite" className="wf-plate sticky top-28 border-l border-line py-4 pl-8">
               <p className="text-sm text-dim">Where I used it</p>
               <p className="mt-2 text-3xl font-medium tracking-[-0.03em]">{current.name}</p>
               <ul className="mt-5 space-y-2">

@@ -52,39 +52,14 @@ VITE_APP_EMAILJS_PUBLIC_KEY=
 
 The template receives `from_name`, `from_email` and `message`.
 
-## The Studio (3D-first)
+## The 3D world
 
-The portfolio is one architectural model you walk through, and the page itself has no layout. The document is just a scroll track; scrolling moves a single camera through about 60 stations. All content is real HTML in reading order (for screen readers and SEO), positioned *inside* the model with CSS `matrix3d`, using the same maths as three.js's CSS3DRenderer. It sits on walls, placards, paper sheets and labels.
+The HTML is always the content. `src/world/` adds a space behind it: one fixed canvas and one camera that moves between chapters as you scroll.
 
-```
-src/App.jsx            Studio where it can run; Site2D (the flat site) everywhere else
-src/studio/            the HTML layer
-  Studio.jsx           mounts the world, scroll length, focus→camera, jumps, veil
-  StudioNav.jsx        top bar, rooms menu, room rail
-  A.jsx, nav.js        anchored block component; rooms + navigation context
-  content/*.jsx        all words and links, keyed to world anchors (data-anchor)
-src/world/studio/      the world
-  create.js            engine: renderer, rooms, path, moods, DOM-in-3D, render-on-demand, watchdog
-  path.js              stations → camera poses (fit-to-viewport), scroll mapping, waypoints
-  css3d.js             places [data-anchor] elements in 3D (matrix3d)
-  kit.js               shared architecture: walls, partitions, blocks, anchors, stations
-  rooms/*.js           one place each: entrance, gallery + 5 installations, engineering,
-                       thinking, lab, tools, archive, threshold, cinema, signals, contact
-src/world/{engine,lighting,materials,quality.js,bus.js}   renderer/loop, moods, palette, tiers, events
-src/site2d/Site2D.jsx  the approved 2D site (reduced motion, no WebGL, weak devices, watchdog)
-```
+- `quality.js` picks a tier: high on desktop, medium on tablet, low on phones. It's off for reduced motion, no WebGL, Save-Data or low-memory devices, and the approved 2D site is what shows then.
+- `rig.js` maps scroll position to the camera, using where each `<section id>` actually sits on the page.
+- `engine.js` owns the renderer, the fog and the Silent Stories mood shift, and an FPS watchdog. When frames are slow it lowers resolution first, then turns the world off.
+- `stations/` has one module per chapter.
+- `bus.js` lets the content tell the world what you're reading (the current project, the selected tool).
 
-**How a room works**
-
-- A room module builds geometry and declares two things:
-  - *anchors* (where each HTML block lives);
-  - *stations* (where the camera stands, and which mood).
-- Content components render `<A k="key">` blocks with the same keys.
-- On narrow screens, a station can read one placard. The camera fits the placard's rendered width to the screen, so text lands near 1:1.
-
-**Behaviour**
-
-- Scrolling is never hijacked.
-- Focusing any link or button moves the camera to it.
-- Frames render only when something changes.
-- The watchdog falls back to Site2D if the device can't keep up. Use `?nowatchdog` for QA on software-rendered browsers only.
+Everything 3D loads after the page is idle, as separate chunks.

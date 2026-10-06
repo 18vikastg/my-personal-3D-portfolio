@@ -28,7 +28,6 @@
  */
 import {
   ACESFilmicToneMapping,
-  Group,
   AmbientLight,
   CanvasTexture,
   Color,
@@ -255,8 +254,12 @@ function backlightTexture() {
   return canvas;
 }
 
-/** The lettering is drawn into a texture, so its font must be ready first. */
-export async function waitForNorenFont() {
+/**
+ * Mounts the noren into `canvas`. Returns a controller, or throws if WebGL
+ * is unavailable (the caller keeps the static image in that case).
+ */
+export async function createNoren(canvas, { lite = false, still = false } = {}) {
+  // The type is drawn into a texture, so the font must be ready first.
   try {
     await Promise.race([
       Promise.all([document.fonts.load('300 92px "Oswald"'), document.fonts.ready]),
@@ -265,28 +268,33 @@ export async function waitForNorenFont() {
   } catch {
     /* fall back to the system face */
   }
-}
 
-const canvasTexture = (c) => {
-  const t = new CanvasTexture(c);
-  t.colorSpace = SRGBColorSpace;
-  return t;
-};
+  const renderer = new WebGLRenderer({ canvas, antialias: !lite, alpha: false, powerPreference: "low-power" });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.25 : 1.75));
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.95;
+  renderer.outputColorSpace = SRGBColorSpace;
 
-/**
- * The cloth itself — rod, three panels, physics — with no renderer or
- * camera, so it can hang in its own little scene or inside the 3D world.
- * Local space: rod at y = BH/2, cloth in the z = 0 plane.
- */
-export function createNorenCloth({ lite = false, anisotropy = 8 } = {}) {
-  const group = new Group();
+  const scene = new Scene();
+  scene.background = new Color(0x000000);
+
+  const tex = (c) => {
+    const t = new CanvasTexture(c);
+    t.colorSpace = SRGBColorSpace;
+    return t;
+  };
+
+  const back = new Mesh(new PlaneGeometry(13, 8.4), new MeshBasicMaterial({ map: tex(backlightTexture()) }));
+  back.position.set(0, 0, -2.4);
+  scene.add(back);
 
   const GX = lite ? 36 : 56;
   const GY = lite ? 24 : 38;
   const geo = new PlaneGeometry(BW, BH, GX, GY);
-  const albedo = canvasTexture(clothTexture());
+  const albedo = tex(clothTexture());
   const alpha = new CanvasTexture(alphaMask());
-  albedo.anisotropy = alpha.anisotropy = anisotropy;
+  const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  albedo.anisotropy = alpha.anisotropy = aniso;
 
   const cloth = new Mesh(
     geo,
@@ -302,19 +310,26 @@ export function createNorenCloth({ lite = false, anisotropy = 8 } = {}) {
       sheenRoughness: 0.75,
     })
   );
-  group.add(cloth);
+  scene.add(cloth);
 
-  const wood = new MeshStandardMaterial({ map: canvasTexture(lacquerTexture()), roughness: 0.5, metalness: 0 });
+  const wood = new MeshStandardMaterial({ map: tex(lacquerTexture()), roughness: 0.5, metalness: 0 });
   const rod = new Mesh(new CylinderGeometry(0.055, 0.055, BW + 0.8, 16), wood);
   rod.rotation.z = Math.PI / 2;
   rod.position.set(0, BH / 2 + 0.045, 0.02);
-  group.add(rod);
-  const capGeo = new SphereGeometry(0.075, 16, 10);
+  scene.add(rod);
   [-1, 1].forEach((side) => {
-    const cap = new Mesh(capGeo, wood);
+    const cap = new Mesh(new SphereGeometry(0.075, 16, 10), wood);
     cap.position.set((side * (BW + 0.8)) / 2, BH / 2 + 0.045, 0.02);
-    group.add(cap);
+    scene.add(cap);
   });
+
+  scene.add(new AmbientLight(0x2a221a, 0.7));
+  const key = new DirectionalLight(0xfff0dc, 1.7);
+  key.position.set(-2.6, 2.4, 2.6);
+  scene.add(key);
+  const rim = new DirectionalLight(0xffc896, 1.4);
+  rim.position.set(0.5, 1.2, -3);
+  scene.add(rim);
 
   /* ---- cloth physics: one sheet, cut into three panels below the sleeve ---- */
   const pos = geo.attributes.position;
@@ -352,8 +367,8 @@ export function createNorenCloth({ lite = false, anisotropy = 8 } = {}) {
     out[2] = (Math.sin(travel) + 0.35 * Math.sin(travel * 1.8 + cx * 3.4)) * 1.1 * cy * gust;
   };
 
-  // Something brushing through the cloth: a hand, or a camera walking through
-  const hand = { x: 0, y: 0, strength: 0, dir: -1 };
+  // Pointer: a hand brushing through the cloth
+  const hand = { x: 0, y: 0, active: false, strength: 0 };
 
   const solve = (a, b, rl) => {
     let dx = cur[b * 3] - cur[a * 3];
@@ -385,9 +400,7 @@ export function createNorenCloth({ lite = false, anisotropy = 8 } = {}) {
   };
 
   const f = [0, 0, 0];
-  let t = 0;
-  const step = () => {
-    t += DT;
+  const step = (t) => {
     hand.strength *= 0.92;
     for (let iy = 0; iy <= GY; iy++) {
       for (let ix = 0; ix <= GX; ix++) {
@@ -398,7 +411,7 @@ export function createNorenCloth({ lite = false, anisotropy = 8 } = {}) {
           const dx = cur[i * 3] - hand.x;
           const dy = cur[i * 3 + 1] - hand.y;
           const fall = Math.exp(-(dx * dx + dy * dy) / 0.18);
-          f[2] += 9 * hand.dir * hand.strength * fall;
+          f[2] -= 9 * hand.strength * fall;
           f[0] += dx * 4 * hand.strength * fall;
         }
         for (let k = 0; k < 3; k++) {
@@ -429,68 +442,7 @@ export function createNorenCloth({ lite = false, anisotropy = 8 } = {}) {
     geo.computeVertexNormals();
   };
 
-  // Settle before the first frame so it never "drops in"
-  for (let s = 0; s < 190; s++) step();
-  commit();
-
-  return {
-    group,
-    /** Advance one physics step and update the mesh. */
-    tick() {
-      step();
-      commit();
-    },
-    /** Push the cloth at local (x, y); dir -1 pushes away from the viewer. */
-    push(x, y, strength = 0.35, dir = -1) {
-      hand.x = x;
-      hand.y = y;
-      hand.dir = dir;
-      hand.strength = Math.min(1, hand.strength + strength);
-    },
-    dispose() {
-      group.traverse((o) => {
-        o.geometry?.dispose();
-        const m = o.material;
-        if (m) {
-          m.map?.dispose();
-          m.alphaMap?.dispose();
-          m.dispose();
-        }
-      });
-    },
-  };
-}
-
-/**
- * The standalone noren: its own small canvas, used only when the 3D world
- * is not running. Throws if WebGL is unavailable (the still image stays).
- */
-export async function createNoren(canvas, { lite = false, still = false } = {}) {
-  await waitForNorenFont();
-
-  const renderer = new WebGLRenderer({ canvas, antialias: !lite, alpha: false, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.25 : 1.75));
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
-  renderer.outputColorSpace = SRGBColorSpace;
-
-  const scene = new Scene();
-  scene.background = new Color(0x000000);
-  const back = new Mesh(new PlaneGeometry(13, 8.4), new MeshBasicMaterial({ map: canvasTexture(backlightTexture()) }));
-  back.position.set(0, 0, -2.4);
-  scene.add(back);
-
-  const cloth = createNorenCloth({ lite, anisotropy: Math.min(8, renderer.capabilities.getMaxAnisotropy()) });
-  scene.add(cloth.group);
-
-  scene.add(new AmbientLight(0x2a221a, 0.7));
-  const key = new DirectionalLight(0xfff0dc, 1.7);
-  key.position.set(-2.6, 2.4, 2.6);
-  scene.add(key);
-  const rim = new DirectionalLight(0xffc896, 1.4);
-  rim.position.set(0.5, 1.2, -3);
-  scene.add(rim);
-
+  /* ---- camera: fixed, framed to the cloth ---- */
   const camera = new PerspectiveCamera(38, 1, 0.1, 100);
   const fit = () => {
     const w = canvas.clientWidth || 1;
@@ -505,8 +457,14 @@ export async function createNoren(canvas, { lite = false, still = false } = {}) 
     camera.updateProjectionMatrix();
   };
   fit();
+
+  // Settle the cloth before the first frame so it never "drops in"
+  let t = 0;
+  for (; t < 3; t += DT) step(t);
+  commit();
   renderer.render(scene, camera);
 
+  /* ---- pointer → cloth plane ---- */
   const ray = new Raycaster();
   const ndc = new Vector2();
   const plane = new Plane(new Vector3(0, 0, 1), 0);
@@ -515,14 +473,20 @@ export async function createNoren(canvas, { lite = false, still = false } = {}) 
     const r = canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    if (ray.ray.intersectPlane(plane, hit)) cloth.push(hit.x, hit.y);
+    if (ray.ray.intersectPlane(plane, hit)) {
+      hand.x = hit.x;
+      hand.y = hit.y;
+      hand.strength = Math.min(1, hand.strength + 0.35);
+    }
   };
 
   let raf = 0;
   let running = false;
   const loop = () => {
     if (!running) return;
-    cloth.tick();
+    t += DT;
+    step(t);
+    commit();
     renderer.render(scene, camera);
     raf = requestAnimationFrame(loop);
   };
@@ -547,10 +511,15 @@ export async function createNoren(canvas, { lite = false, still = false } = {}) 
       running = false;
       cancelAnimationFrame(raf);
       canvas.removeEventListener("pointermove", onPointer);
-      cloth.dispose();
-      back.geometry.dispose();
-      back.material.map.dispose();
-      back.material.dispose();
+      scene.traverse((o) => {
+        o.geometry?.dispose();
+        const m = o.material;
+        if (m) {
+          m.map?.dispose();
+          m.alphaMap?.dispose();
+          m.dispose();
+        }
+      });
       renderer.dispose();
     },
   };

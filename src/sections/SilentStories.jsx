@@ -44,7 +44,7 @@ const SilentStories = () => {
         <p data-reveal className="eyebrow">
           Outside the IDE
         </p>
-        <h2 id="ss-chapter" data-reveal data-split className="display mt-4 max-w-[20ch] text-[clamp(2rem,4.6vw,3.75rem)] text-fg">
+        <h2 id="ss-chapter" data-reveal className="display mt-4 max-w-[20ch] text-[clamp(2rem,4.6vw,3.75rem)] text-fg">
           Code is one way I build things. <span className="serif-accent text-ss-cream">Stories are another.</span>
         </h2>
 

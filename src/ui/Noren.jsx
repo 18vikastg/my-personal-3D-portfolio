@@ -54,11 +54,7 @@ const Noren = () => {
         if (cancelled) return;
         const lite = window.matchMedia("(max-width: 1099px)").matches;
         ctrl = await createNoren(canvas, { lite });
-        if (cancelled) {
-          ctrl.dispose();
-          ctrl = null;
-          return;
-        }
+        if (cancelled) return ctrl.dispose();
         setLive(true);
         sync();
       } catch {
