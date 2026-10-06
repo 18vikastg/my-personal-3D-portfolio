@@ -15,15 +15,16 @@ export const PX = 0.004;
 
 /**
  * An anchor is a position + orientation in the world where one HTML block
- * lives. `at` lists the stations from which it is meant to be read.
+ * lives. `at` lists the stations from which it is meant to be read; `grow`
+ * enlarges it on narrow screens, where the camera stands further back.
  */
-export function anchor(key, { pos, ry = 0, rx = 0, rz = 0, scale = PX, at, parent }) {
+export function anchor(key, { pos, ry = 0, rx = 0, rz = 0, scale = PX, grow = 1, at, parent }) {
   const o = new Object3D();
   o.position.copy(pos);
   o.rotation.set(rx, ry, rz, "YXZ");
   o.scale.setScalar(scale);
   parent?.add(o);
-  return { key, object: o, at: at ?? [] };
+  return { key, object: o, at: at ?? [], scale, grow };
 }
 
 /** A camera station. `dir` points from the subject towards the camera. */

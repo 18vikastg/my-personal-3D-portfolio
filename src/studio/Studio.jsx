@@ -13,6 +13,8 @@ import Cinema from "./content/Cinema";
 import Ending from "./content/Ending";
 
 const isNarrow = () => window.innerWidth < 900 || window.innerWidth / window.innerHeight < 0.85;
+// Landscape phones: narrow framing, but a wider text measure fits the short screen better
+const isShort = () => isNarrow() && window.innerWidth / window.innerHeight > 1.25;
 
 /**
  * THE STUDIO — the portfolio is a place. A single camera walks through one
@@ -32,6 +34,7 @@ const Studio = ({ quality, onFail }) => {
   const [station, setStation] = useState("entrance:0");
   const [fade, setFade] = useState(false);
   const [narrow, setNarrow] = useState(isNarrow);
+  const [short, setShort] = useState(isShort);
 
   useEffect(() => {
     let api = null;
@@ -57,7 +60,10 @@ const Studio = ({ quality, onFail }) => {
         onFail();
       }
     })();
-    const onResize = () => setNarrow(isNarrow());
+    const onResize = () => {
+      setNarrow(isNarrow());
+      setShort(isShort());
+    };
     window.addEventListener("resize", onResize);
     return () => {
       cancelled = true;
@@ -108,7 +114,7 @@ const Studio = ({ quality, onFail }) => {
   const here = roomOf(room);
 
   return (
-    <NavContext.Provider value={{ go, current: station, narrow }}>
+    <NavContext.Provider value={{ go, current: station, narrow, short }}>
       <a
         href="#studio-work"
         onClick={(e) => {
@@ -121,7 +127,7 @@ const Studio = ({ quality, onFail }) => {
       </a>
       <StudioNav room={room} go={go} />
       <canvas ref={canvasRef} aria-hidden="true" className="fixed inset-0 block size-full" />
-      <div ref={viewRef} className="studio-view" onFocusCapture={onFocus}>
+      <div ref={viewRef} className="studio-view" data-narrow={narrow || undefined} onFocusCapture={onFocus}>
         <div ref={stageRef} className="studio-stage">
           <main className="contents">
             <Entrance />
@@ -129,7 +135,7 @@ const Studio = ({ quality, onFail }) => {
             <Engineering />
             <Thinking />
             <Lab />
-            <Tools narrow={narrow} />
+            <Tools narrow={narrow && !short} />
             <Archive />
             <Cinema />
             <Ending />

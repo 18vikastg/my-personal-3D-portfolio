@@ -204,6 +204,19 @@ section[id] {
   text-transform: uppercase;
   color: var(--color-muted);
 }
+/* Phones see wall lettering from further away: the small lines grow */
+[data-narrow] .sign .kicker {
+  font-size: 26px;
+}
+[data-narrow] .tag {
+  font-size: 22px;
+  white-space: normal;
+  max-width: 300px;
+}
+[data-narrow] .sign :is(h2, h3) + p {
+  font-size: 34px;
+  line-height: 1.3;
+}
 /* Small labels on objects */
 .tag {
   font-family: var(--font-mono);

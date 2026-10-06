@@ -6,8 +6,11 @@ import { useStudioNav } from "./nav";
  * measure on phones; the camera then frames the block by its real width.
  */
 export const A = ({ k, as: Tag = "div", className = "", width, style, children, ...rest }) => {
-  const { narrow } = useStudioNav();
-  const w = Array.isArray(width) ? width[narrow ? 1 : 0] : width;
+  const { narrow, short } = useStudioNav();
+  // Placards keep a phone-friendly measure on portrait phones; landscape
+  // phones keep the wide measure, which is shorter and suits the screen
+  const phone = narrow && !short;
+  const w = Array.isArray(width) ? width[phone ? 1 : 0] : phone && /placard/.test(className) ? Math.min(width, 360) : width;
   return (
     <Tag data-anchor={k} className={`anchor ${className}`} style={{ width: w, ...style }} {...rest}>
       {children}

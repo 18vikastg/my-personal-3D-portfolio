@@ -138,7 +138,7 @@ export function engineering(ctx) {
   const wallX = -4.58;
   const side = Math.PI / 2; // facing the machine (+x)
   const towardPath = -Math.PI / 2; // labels on the machine face the visitor (-x)
-  const label = (key, x, yy, z, at) => anchor(`eng:part-${key}`, { pos: v(x, yy, z), ry: towardPath, scale: 0.0042, at, parent: g });
+  const label = (key, x, yy, z, at) => anchor(`eng:part-${key}`, { pos: v(x, yy, z), ry: towardPath, scale: 0.0042, grow: 1.25, at, parent: g });
   const A = (...k) => k.map((n) => `engineering:${n}`);
   const anchors = [
     anchor("eng:intro", { pos: v(wallX, 2.25, -114), ry: side, at: A(0), parent: g }),
@@ -155,9 +155,10 @@ export function engineering(ctx) {
     label("reject", X + 1.9, top + 0.8, Z.review + 2.4, A(3)),
     label("audit", X - 0.55, top + 1.1, Z.audit, A(4)),
     label("done", X, top + 2.0, Z.done, A(4)),
-    anchor("eng:illustrative", { pos: v(X - 1.6, top + 0.02, -142.6), rx: -Math.PI / 2, ry: towardPath, scale: 0.0034, at: A(4), parent: g }),
+    anchor("eng:illustrative", { pos: v(X - 1.6, top + 0.02, -141.5), rx: -Math.PI / 2, ry: towardPath, scale: 0.0034, grow: 1.4, at: A(4), parent: g }),
     anchor("eng:how", { pos: v(wallX, 2.2, -146.5), ry: side, scale: 0.0034, at: A(5), parent: g }),
-    anchor("eng:arcolab", { pos: v(-3.5, 2.1, -156.82), scale: 0.0034, at: A(6), parent: g }),
+    anchor("eng:built", { pos: v(wallX, 2.2, -150.4), ry: side, scale: 0.0034, at: A(6), parent: g }),
+    anchor("eng:arcolab", { pos: v(-3.5, 2.1, -156.82), scale: 0.0034, at: A(7), parent: g }),
   ];
 
   // Arcolab alcove: a small security console before the next doorway
@@ -165,12 +166,13 @@ export function engineering(ctx) {
 
   const stations = [
     station("engineering:0", "engineering", { focus: v(-4.58, 2.25, -114), dir: v(1, 0.06, 0.42), fit: 1.75, narrow: { anchor: "eng:intro" }, mood: "system" }),
-    station("engineering:1", "engineering", { focus: v(X, 1.7, -116.5), dir: v(-1, 0.3, 0.32), fit: 2.4, narrow: { focus: v(X - 0.4, 1.2, -118), fit: 1.15 }, mood: "system" }),
-    station("engineering:2", "engineering", { focus: v(X + 0.3, 1.9, -129), dir: v(-1, 0.28, 0.25), fit: 2.5, narrow: { focus: v(X - 0.2, 1.5, -128.2), fit: 1.5 }, mood: "system" }),
-    station("engineering:3", "engineering", { focus: v(X + 0.5, 1.1, -136.4), dir: v(-1, 0.45, 0.3), fit: 2.2, narrow: { focus: v(X, 1.3, -136.2), fit: 1.2 }, mood: "system" }),
-    station("engineering:4", "engineering", { focus: v(X, 1.1, -142.6), dir: v(-1, 0.42, 0.3), fit: 2.2, narrow: { focus: v(X - 0.3, 1.2, -141.8), fit: 1.25 }, mood: "system" }),
+    station("engineering:1", "engineering", { focus: v(X, 1.7, -116.5), dir: v(-1, 0.3, 0.32), fit: 2.4, narrow: { anchor: "eng:stats" }, mood: "system" }),
+    station("engineering:2", "engineering", { focus: v(X + 0.3, 1.9, -129), dir: v(-1, 0.28, 0.25), fit: 2.5, narrow: { focus: v(X + 0.5, 2.2, -127.9), dir: v(-1, 0.22, 0.06), fit: 1.85 }, mood: "system" }),
+    station("engineering:3", "engineering", { focus: v(X + 0.5, 1.1, -136.4), dir: v(-1, 0.45, 0.3), fit: 2.2, narrow: { focus: v(X + 0.4, 1.3, -135.5), dir: v(-1, 0.35, 0.06), fit: 1.8 }, mood: "system" }),
+    station("engineering:4", "engineering", { focus: v(X, 1.1, -142.6), dir: v(-1, 0.42, 0.3), fit: 2.2, narrow: { focus: v(X - 0.2, 1.3, -141.3), dir: v(-1, 0.4, 0.06), fit: 1.85 }, mood: "system" }),
     station("engineering:5", "engineering", { focus: v(wallX, 2.2, -146.5), dir: v(1, 0.05, 0.22), fit: 1.45, narrow: { anchor: "eng:how" }, mood: "system" }),
-    station("engineering:6", "engineering", { focus: v(-3.3, 1.75, -156.6), dir: v(0.2, 0.12, 1), fit: 1.75, narrow: { anchor: "eng:arcolab" }, mood: "system" }),
+    station("engineering:6", "engineering", { focus: v(wallX, 2.2, -150.4), dir: v(1, 0.05, 0.22), fit: 1.45, narrow: { anchor: "eng:built" }, mood: "system" }),
+    station("engineering:7", "engineering", { focus: v(-3.3, 1.75, -156.6), dir: v(0.2, 0.12, 1), fit: 1.75, narrow: { anchor: "eng:arcolab" }, mood: "system" }),
   ];
   return { group: g, anchors, stations, update };
 }

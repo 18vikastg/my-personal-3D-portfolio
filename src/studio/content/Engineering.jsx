@@ -1,5 +1,6 @@
 import { earlier, pivotPath as pp } from "../../data/experience";
 import { A } from "../A";
+import { useStudioNav } from "../nav";
 
 // Machine part labels. Module names appear only where a shipped module
 // genuinely corresponds to that part of the flow.
@@ -23,6 +24,26 @@ const PARTS = [
  * long wall, numbers over the machine, names on the machine's parts, the
  * parts list where the line ends, and the earlier role in its alcove.
  */
+/** The numbers, on the machine's housing. Phones read them as rows. */
+const Stats = () => {
+  const { narrow } = useStudioNav();
+  return (
+    <A k="eng:stats" className="sign" width={[760, 440]}>
+      <dl className={narrow ? "space-y-5" : "grid grid-cols-3 gap-8"}>
+        {pp.stats.map((s) => (
+          <div key={s.label} className={narrow ? "flex items-baseline gap-5" : "flex flex-col-reverse"}>
+            <dt className={`text-[17px] leading-snug text-muted ${narrow ? "order-2" : "mt-2"}`}>{s.label}</dt>
+            <dd className={`shrink-0 font-medium leading-none tracking-[-0.03em] ${narrow ? "w-[150px] text-[48px]" : "text-[64px]"}`}>
+              {s.value.toLocaleString("en-US")}
+              {s.suffix}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </A>
+  );
+};
+
 const Engineering = () => (
   <section className="contents" aria-labelledby="studio-exp">
     <A k="eng:intro" className="placard" width={520}>
@@ -46,26 +67,14 @@ const Engineering = () => (
       <p className="mt-4 text-[14px] text-muted">The machine beside you is a working model of that kind of engine. Walk along it.</p>
     </A>
 
-    <A k="eng:stats" className="sign" width={[760, 520]}>
-      <dl className="grid grid-cols-3 gap-8">
-        {pp.stats.map((s) => (
-          <div key={s.label} className="flex flex-col-reverse">
-            <dt className="mt-2 text-[17px] leading-snug text-muted">{s.label}</dt>
-            <dd className="text-[64px] font-medium leading-none tracking-[-0.03em]">
-              {s.value.toLocaleString("en-US")}
-              {s.suffix}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </A>
+    <Stats />
 
     {PARTS.map(([key, text]) => (
       <A key={key} k={`eng:part-${key}`} className="tag">
         {text}
       </A>
     ))}
-    <A k="eng:illustrative" className="sign" width={520}>
+    <A k="eng:illustrative" className="sign" width={[520, 380]}>
       <p className="font-mono text-[18px] text-dim">Illustrative model · not a real process, client or dataset</p>
     </A>
 
@@ -79,7 +88,10 @@ const Engineering = () => (
           </li>
         ))}
       </ul>
-      <p className="mt-5 text-[15px] text-fg/85">
+    </A>
+
+    <A k="eng:built" className="placard" width={460}>
+      <p className="text-[16px] text-fg/85">
         <span className="text-fg">The engine handles</span> {pp.engine.slice(0, -1).join(", ")} and {pp.engine.at(-1)}.
       </p>
       <p className="kicker mt-5">How it’s built</p>

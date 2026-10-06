@@ -96,6 +96,7 @@ export async function createStudio({ canvas, view, stage, quality, onFail, onLen
     el: null,
     shown: -1,
     normal: new Vector3(),
+    up: new Vector3(),
     wp: new Vector3(),
   }));
   const byKey = Object.fromEntries(anchors.map((a) => [a.key, a]));
@@ -104,12 +105,14 @@ export async function createStudio({ canvas, view, stage, quality, onFail, onLen
     const a = byKey[el.dataset.anchor];
     if (!a) return;
     a.el = el;
+    a.tag = el.classList.contains("tag");
     els[a.key] = el;
   });
   anchors.forEach((a) => {
     a.object.updateMatrixWorld(true);
     a.object.getWorldPosition(a.wp);
     a.normal.set(0, 0, 1).transformDirection(a.object.matrixWorld);
+    a.up.set(0, 1, 0).transformDirection(a.object.matrixWorld);
   });
   modules.forEach((m) => m.bind?.(els));
 
@@ -119,15 +122,29 @@ export async function createStudio({ canvas, view, stage, quality, onFail, onLen
   // On narrow screens a station can simply "read" one placard: the camera
   // faces it and fits the placard's *rendered* width to ~93% of the screen,
   // so text lands near 1:1 whatever the placard contains.
-  const fitToAnchors = () => {
+  // Fits width AND height (leaving room for the top bar), for any aspect —
+  // portrait phones, small phones and landscape phones alike.
+  // The block is framed in the space between the top bar and the room
+  // label, not the whole screen.
+  const BAR = 68;
+  const FOOT = 30;
+  const fitToAnchors = (aspect, fov, screenH) => {
+    const half = Math.tan(MathUtils.degToRad(fov) / 2);
+    const tight = Math.min(half, half * aspect);
+    const usable = 1 - (BAR + FOOT) / screenH;
+    const lift = (BAR - FOOT) / 2 / (screenH / 2);
     stations.forEach((st) => {
       const key = st.narrow?.anchor;
       const a = key && byKey[key];
       if (!a?.el) return;
       const scale = a.object.scale.x;
-      st.narrow.focus = a.wp.clone();
+      const w = a.el.offsetWidth * scale;
+      const h = a.el.offsetHeight * scale;
+      const dist = Math.max((w * 1.08) / (2 * half * aspect), (h * 1.05) / (2 * half * usable));
       st.narrow.dir = a.normal.clone().add(new Vector3(0, 0.04, 0));
-      st.narrow.fit = a.el.offsetWidth * scale * 0.54;
+      // aim a little above the block so it sits below the top bar
+      st.narrow.focus = a.wp.clone().addScaledVector(a.up, lift * dist * half);
+      st.narrow.fit = dist * tight;
     });
   };
 
@@ -135,8 +152,14 @@ export async function createStudio({ canvas, view, stage, quality, onFail, onLen
     const w = window.innerWidth;
     const h = window.innerHeight;
     narrow = narrowFor(w, h);
-    fitToAnchors();
     camera.fov = narrow ? 58 : 44;
+    anchors.forEach((a) => {
+      if (a.grow === 1) return;
+      a.object.scale.setScalar(a.scale * (narrow ? a.grow : 1));
+      a.object.updateMatrixWorld(true);
+    });
+    anchors.forEach((a) => a.el && ((a.w = a.el.offsetWidth), (a.h = a.el.offsetHeight)));
+    fitToAnchors(w / h, camera.fov, h);
     fit(camera);
     path.rebuild({ fov: camera.fov, aspect: w / h, narrow, height: h });
     onLength?.(path.length(h));
@@ -173,6 +196,7 @@ export async function createStudio({ canvas, view, stage, quality, onFail, onLen
 
   /* ---- frame ---- */
   const toCam = new Vector3();
+  const local = new Vector3();
   const s = { at: 0, room: "", roomStart: 0, mood: null, pointer, camera };
   const frame = (dt, continuous, raw) => {
     const w = window.innerWidth;
@@ -220,6 +244,17 @@ export async function createStudio({ canvas, view, stage, quality, onFail, onLen
       if (wgt > 0) {
         toCam.subVectors(camera.position, a.wp);
         if (toCam.dot(a.normal) <= 0) wgt = 0;
+      }
+      // On phones a small label never shows half cut by the screen edge
+      if (wgt > 0 && narrow && a.tag) {
+        local.copy(a.wp).applyMatrix4(camera.matrixWorldInverse);
+        const d = -local.z;
+        const half = Math.tan(MathUtils.degToRad(camera.fov) / 2);
+        const sx = d * half * camera.aspect;
+        const sy = d * half;
+        const s = a.object.scale.x / 2;
+        const edge = d > 0 ? Math.max((Math.abs(local.x) + a.w * s) / sx, (Math.abs(local.y) + a.h * s) / sy) : 9;
+        wgt = Math.min(wgt, (1.02 - edge) / 0.1);
       }
       const o = Math.round(MathUtils.clamp(wgt, 0, 1) * 100) / 100;
       if (o > 0) css.place(a.el, a.object);

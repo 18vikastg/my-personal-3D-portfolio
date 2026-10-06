@@ -58,14 +58,14 @@ export function archive(ctx) {
     ...Array.from({ length: STAGES }, (_, i) =>
       anchor(`archive:stage-${i}`, { pos: v(0.9 + i * 0.66, 0.5 + i * 0.16 + (i % 2) * 0.35, -223.6), scale: 0.0034, at: A(2), parent: g })
     ),
-    anchor("archive:recall", { pos: v(3.6, 1.7, -226.1), scale: 0.0032, at: A(2), parent: g }),
+    anchor("archive:recall", { pos: v(3.6, 1.7, -226.1), scale: 0.0032, grow: 1.7, at: A(2), parent: g }),
     anchor("archive:research", { pos: v(-4.03, 1.75, -219.5), ry: Math.PI / 2, scale: 0.003, at: A(3), parent: g }),
   ];
 
   const stations = [
-    station("archive:0", "archive", { focus: v(-3.3, 2.5, -229.8), dir: v(0.2, 0.08, 1), fit: 1.85, narrow: { anchor: "archive:award" }, via: [v(0, 1.9, -209)], mood: "archive" }),
+    station("archive:0", "archive", { focus: v(-3.3, 2.5, -229.8), dir: v(0.2, 0.08, 1), fit: 1.85, narrow: { focus: v(-3.9, 2.85, -229.86), dir: v(0, 0.04, 1), fit: 1.02 }, via: [v(0, 1.9, -209)], mood: "archive" }),
     station("archive:1", "archive", { focus: v(0, 1.13, -218), dir: v(0, 1.0, 0.5), fit: 0.7, narrow: { anchor: "archive:paper" }, mood: "archive" }),
-    station("archive:2", "archive", { focus: v(2.4, 1.3, -225), dir: v(-0.2, 0.3, 1), fit: 1.9, narrow: { focus: v(2.4, 1.2, -225), fit: 1.9 }, mood: "archive" }),
+    station("archive:2", "archive", { focus: v(2.4, 1.3, -225), dir: v(-0.2, 0.3, 1), fit: 1.9, narrow: { focus: v(3.05, 1.5, -225.6), fit: 1.5 }, mood: "archive" }),
     station("archive:3", "archive", { focus: v(-4.03, 1.75, -219.5), dir: v(1, 0.05, 0.2), fit: 1.35, narrow: { anchor: "archive:research" }, mood: "archive" }),
   ];
   return { group: g, anchors, stations };

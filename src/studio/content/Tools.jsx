@@ -17,8 +17,8 @@ const Tools = ({ narrow }) => {
           A stack with <span className="serif-accent">receipts.</span>
         </h2>
       </A>
-      <A k="tools:board" width={narrow ? 560 : 1500}>
-        <div className={`grid gap-6 ${narrow ? "grid-cols-2" : "grid-cols-6"}`}>
+      <A k="tools:board" width={narrow ? 620 : 1500}>
+        <div className={`grid ${narrow ? "grid-cols-3 gap-x-4 gap-y-6" : "grid-cols-6 gap-6"}`}>
           {groups.map((g) => (
             <div key={g}>
               <h3 className="font-mono text-[14px] uppercase tracking-[0.16em] text-muted">{g}</h3>
@@ -35,7 +35,7 @@ const Tools = ({ narrow }) => {
                           aria-pressed={on}
                           onClick={() => setActive(t.name)}
                           onPointerEnter={(e) => e.pointerType === "mouse" && setActive(t.name)}
-                          className={`rounded-[3px] border px-3 py-1.5 text-[19px] transition-colors ${
+                          className={`rounded-[3px] border px-3 transition-colors ${narrow ? "py-3 text-[24px]" : "py-1.5 text-[19px]"} ${
                             on ? "border-lime bg-lime text-ink" : "border-line-strong bg-ink/80 text-fg hover:border-fg"
                           }`}
                         >
